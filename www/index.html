@@ -14,16 +14,14 @@
                 <h1 class="text-xl font-bold flex items-center gap-2"><i class="fa-solid fa-shield-dog"></i> Anjo da Rua</h1>
                 <p class="text-xs text-teal-200">Patos, PB • Secure Pro Edition</p>
             </div>
-            <div class="flex items-center gap-2">
-                <span id="badgeOperacional" class="bg-teal-800 text-teal-100 text-xs px-2.5 py-1 rounded-full font-semibold flex items-center gap-1">
-                    <i class="fa-solid fa-circle text-green-400 text-[8px]"></i> <span id="txtStatusOp">Operacional</span>
-                </span>
-            </div>
+            <button onclick="alternarEstadoPlantao()" id="btnStatusOp" class="bg-teal-800 hover:bg-teal-900 text-teal-100 text-xs px-2.5 py-1.5 rounded-full font-semibold flex items-center gap-1 transition shadow">
+                <i id="iconeStatus" class="fa-solid fa-circle text-green-400 text-[8px]"></i> <span id="txtStatusOp">Operacional</span>
+            </button>
         </div>
     </header>
 
     <main class="max-w-md mx-auto p-4 space-y-4">
-        <!-- Estatísticas Rápidas -->
+        <!-- Estatísticas & Modo Noturno -->
         <div class="grid grid-cols-2 gap-2">
             <div class="bg-slate-800 p-3 rounded-xl border border-slate-700 text-center">
                 <div class="text-[10px] text-slate-400 uppercase font-semibold">Total Registados</div>
@@ -36,12 +34,20 @@
             </div>
         </div>
 
-        <div class="bg-amber-950/50 border border-amber-600/50 p-3 rounded-xl flex items-start gap-3 shadow-md">
-            <i class="fa-solid fa-triangle-exclamation text-amber-400 text-xl mt-0.5"></i>
-            <div>
-                <h2 class="text-sm font-bold text-amber-200">Alerta Operacional Ativo</h2>
-                <p class="text-xs text-amber-300/80">Platão ativo em Patos-PB. Relate ocorrências urgentes diretamente com os canais abaixo.</p>
+        <!-- Botão SOS Pânico Rápido -->
+        <div class="bg-gradient-to-r from-red-900/80 to-rose-950 border border-red-500/50 p-3 rounded-xl flex items-center justify-between shadow-lg">
+            <div class="flex items-center gap-3">
+                <div class="bg-red-600 text-white p-2.5 rounded-lg animate-pulse">
+                    <i class="fa-solid fa-triangle-exclamation text-lg"></i>
+                </div>
+                <div>
+                    <h2 class="text-xs font-bold text-red-200">Alerta de Pânico / SOS</h2>
+                    <p class="text-[10px] text-red-300">Envio imediato de socorro via WhatsApp.</p>
+                </div>
             </div>
+            <button onclick="enviarSOS()" class="bg-red-600 hover:bg-red-500 text-white text-xs font-bold px-3 py-2 rounded-lg shadow transition">
+                SOS 🚨
+            </button>
         </div>
 
         <div class="grid grid-cols-3 gap-2">
@@ -62,13 +68,12 @@
             </a>
         </div>
 
-        <!-- Registo de Ocorrência & Funcionalidades Novas -->
+        <!-- Registo de Ocorrência -->
         <div class="bg-slate-800 p-4 rounded-xl border border-slate-700 shadow-lg space-y-3">
             <h2 class="text-sm font-bold flex items-center gap-2"><i class="fa-solid fa-location-crosshairs text-teal-400"></i> Registar Ocorrência & GPS</h2>
             
             <textarea id="ocorrenciaDesc" placeholder="Descreva a ocorrência ou animal/situação resgatada..." class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-xs text-white focus:outline-none focus:border-teal-500 h-20"></textarea>
             
-            <!-- Seletor de Urgência -->
             <div>
                 <label class="text-[10px] text-slate-400 block mb-1">Nível de Urgência:</label>
                 <select id="nivelUrgencia" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-xs text-white focus:outline-none focus:border-teal-500">
@@ -78,9 +83,8 @@
                 </select>
             </div>
 
-            <!-- Anexo de Foto Opcional -->
             <div>
-                <label class="text-[10px] text-slate-400 block mb-1">Anexar Registo Fotográfico:</label>
+                <label class="text-[10px] text-slate-400 block mb-1">Anexo Registo Fotográfico:</label>
                 <input type="file" id="fotoOcorrencia" accept="image/*" class="w-full text-xs text-slate-400 file:mr-2 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-slate-700 file:text-teal-300 hover:file:bg-slate-600">
             </div>
 
@@ -95,11 +99,16 @@
             <p id="statusGPS" class="text-[10px] text-slate-400">GPS não capturado.</p>
         </div>
 
-        <div class="bg-slate-800 p-4 rounded-xl border border-slate-700 shadow-lg">
-            <div class="flex justify-between items-center mb-2">
+        <!-- Histórico e Relatórios -->
+        <div class="bg-slate-800 p-4 rounded-xl border border-slate-700 shadow-lg space-y-3">
+            <div class="flex justify-between items-center">
                 <h2 class="text-sm font-bold flex items-center gap-2"><i class="fa-solid fa-list-check text-teal-400"></i> Histórico de Atendimentos</h2>
-                <button onclick="registarAtendimento()" class="bg-teal-600 hover:bg-teal-500 text-white text-[10px] px-2.5 py-1 rounded font-semibold">+ Guardar</button>
+                <div class="flex gap-1">
+                    <button onclick="copiarRelatorio()" title="Copiar Relatório" class="bg-slate-700 hover:bg-slate-600 text-teal-300 text-[10px] px-2 py-1 rounded font-semibold"><i class="fa-solid fa-copy"></i></button>
+                    <button onclick="registarAtendimento()" class="bg-teal-600 hover:bg-teal-500 text-white text-[10px] px-2.5 py-1 rounded font-semibold">+ Guardar</button>
+                </div>
             </div>
+            
             <div id="listaAtendimentos" class="space-y-2 max-h-40 overflow-y-auto text-xs">
                 <p class="text-slate-400 text-center py-2">Nenhum registo recente.</p>
             </div>
@@ -129,6 +138,12 @@
     <script>
         let gpsCoord = "";
         let modoEscuroAtivo = true;
+        let estadoIdx = 0;
+        const estados = [
+            { texto: "Operacional", cor: "bg-teal-800", icone: "text-green-400" },
+            { texto: "Em Ocorrência", cor: "bg-amber-800", icone: "text-amber-400" },
+            { texto: "Descanso", cor: "bg-slate-700", icone: "text-slate-400" }
+        ];
 
         function capturarGPS() {
             const status = document.getElementById("statusGPS");
@@ -150,6 +165,20 @@
             const urgencia = document.getElementById("nivelUrgencia").value;
             const texto = `*Ocorrência Anjo da Rua*\nUrgência: ${urgencia}\nDescrição: ${desc}\nLocalização: ${gpsCoord || "Não informada"}`;
             window.open(`https://wa.me/5583986603681?text=${encodeURIComponent(texto)}`, "_blank");
+        }
+
+        function enviarSOS() {
+            const texto = `🚨 *ALERTA SOS - ANJO DA RUA* 🚨\nPreciso de apoio urgente na minha localização!\nLocalização: ${gpsCoord || "GPS não obtido (Verificar de imediato)"}`;
+            window.open(`https://wa.me/5583986603681?text=${encodeURIComponent(texto)}`, "_blank");
+        }
+
+        function alternarEstadoPlantao() {
+            estadoIdx = (estadoIdx + 1) % estados.length;
+            const e = estados[estadoIdx];
+            const btn = document.getElementById("btnStatusOp");
+            btn.className = `${e.cor} text-teal-100 text-xs px-2.5 py-1.5 rounded-full font-semibold flex items-center gap-1 transition shadow`;
+            document.getElementById("txtStatusOp").innerText = e.texto;
+            document.getElementById("iconeStatus").className = `fa-solid fa-circle ${e.icone} text-[8px]`;
         }
 
         function registarAtendimento() {
@@ -186,6 +215,18 @@
                     <div class="text-slate-200">${item.desc}</div>
                 </div>
             `).join("");
+        }
+
+        function copiarRelatorio() {
+            let hist = JSON.parse(localStorage.getItem("atendimentos") || "[]");
+            if (hist.length === 0) {
+                alert("Sem registos para exportar.");
+                return;
+            }
+            let textoRelatorio = "*Relatório de Atendimentos - Anjo da Rua*\n\n" + hist.map(i => `• [${i.urgencia}] ${i.data}: ${i.desc}`).join("\n");
+            navigator.clipboard.writeText(textoRelatorio).then(() => {
+                alert("Relatório copiado para a área de transferência!");
+            });
         }
 
         function alternarModoNoturno() {
