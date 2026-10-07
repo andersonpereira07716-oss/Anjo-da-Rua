@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">ResgatePatos</string>
+    <string name="title_activity_main">ResgatePatos</string>
+    <string name="package_name">com.resgate.patos</string>
+    <string name="custom_url_scheme">com.resgate.patos</string>
+</resources>
