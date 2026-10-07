@@ -95,9 +95,15 @@
 
             <textarea id="ocorrenciaDesc" placeholder="Descreva os detalhes do animal, raça aparente, cor e ponto de referência exato..." class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-xs text-white focus:outline-none focus:border-teal-500 h-20"></textarea>
             
-            <div>
-                <label class="text-[10px] text-slate-400 block mb-1">Notas de Apoio / Tratamento Inicial:</label>
-                <input type="text" id="notasTratamento" placeholder="Ex: Recebeu água, aguardando transporte..." class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-xs text-white focus:outline-none focus:border-teal-500">
+            <div class="grid grid-cols-2 gap-2">
+                <div>
+                    <label class="text-[10px] text-slate-400 block mb-1">Notas / Tratamento:</label>
+                    <input type="text" id="notasTratamento" placeholder="Ex: Hidratado, medicação..." class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-xs text-white focus:outline-none focus:border-teal-500">
+                </div>
+                <div>
+                    <label class="text-[10px] text-slate-400 block mb-1">Custo Estimado (R$):</label>
+                    <input type="number" id="custoCaso" placeholder="0.00" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-xs text-white focus:outline-none focus:border-teal-500">
+                </div>
             </div>
 
             <div class="flex gap-2 pt-1">
@@ -133,6 +139,7 @@
                 <h2 class="text-sm font-bold flex items-center gap-2"><i class="fa-solid fa-list-check text-teal-400"></i> Histórico de Resgates</h2>
                 <div class="flex gap-1">
                     <button onclick="copiarRelatorio()" title="Copiar Relatório" class="bg-slate-700 hover:bg-slate-600 text-teal-300 text-[10px] px-2 py-1 rounded font-semibold"><i class="fa-solid fa-copy"></i></button>
+                    <button onclick="limparHistorico()" title="Apagar Histórico" class="bg-rose-900/60 hover:bg-rose-800 text-rose-200 text-[10px] px-2 py-1 rounded font-semibold"><i class="fa-solid fa-trash"></i></button>
                     <button onclick="registarAtendimento()" class="bg-teal-600 hover:bg-teal-500 text-white text-[10px] px-2.5 py-1 rounded font-semibold shadow">+ Guardar</button>
                 </div>
             </div>
@@ -144,14 +151,14 @@
                 <button onclick="filtrarHistorico('Gato')" id="filtroGato" class="bg-slate-700 text-slate-300 px-2.5 py-1 rounded font-semibold flex-1">Gatos</button>
             </div>
             
-            <div id="listaAtendimentos" class="space-y-2 max-h-44 overflow-y-auto text-xs pr-1">
-                <p class="text-slate-400 text-center py-2">Nenhum registo de resgate recente.</p>
+            <div id="listaAtendimentos" class="space-y-2 max-h-48 overflow-y-auto text-xs pr-1">
+                <p class="text-slate-400 text-center py-2">Nenhum registo encontrado.</p>
             </div>
         </div>
 
         <!-- Órgãos & Apoio Patos-PB -->
-        <div class="bg-slate-800 p-4 rounded-xl border border-slate-700 shadow-lg">
-            <h2 class="text-sm font-bold mb-2 flex items-center gap-2"><i class="fa-solid fa-address-book text-teal-400"></i> Órgãos & Apoio Patos-PB</h2>
+        <div class="bg-slate-800 p-4 rounded-xl border border-slate-700 shadow-lg space-y-2">
+            <h2 class="text-sm font-bold flex items-center gap-2"><i class="fa-solid fa-address-book text-teal-400"></i> Órgãos & Apoio Patos-PB</h2>
             <div class="grid grid-cols-2 gap-2 text-xs">
                 <a href="tel:199" class="bg-slate-900 p-2 rounded border border-slate-700 flex justify-between items-center hover:border-teal-500 transition">
                     <span>Defesa Civil</span>
@@ -209,7 +216,8 @@
             const condicao = document.getElementById("condicaoAnimal").value;
             const desc = document.getElementById("ocorrenciaDesc").value;
             const notas = document.getElementById("notasTratamento").value;
-            const texto = `🐾 *RESGATE ANIMAL - ANJO DA RUA* 🐾\nEspécie: ${especie}\nCondição: ${condicao}\nDetalhes: ${desc}\nNotas: ${notas || "Nenhuma"}\nLocalização: ${gpsCoord || "Não informada"}`;
+            const custo = document.getElementById("custoCaso").value;
+            const texto = `🐾 *RESGATE ANIMAL - ANJO DA RUA* 🐾\nEspécie: ${especie}\nCondição: ${condicao}\nDetalhes: ${desc}\nNotas: ${notas || "Nenhuma"}\nCusto Estimado: R$ ${custo || "0,00"}\nLocalização: ${gpsCoord || "Não informada"}`;
             window.open(`https://wa.me/5583986603681?text=${encodeURIComponent(texto)}`, "_blank");
         }
 
@@ -232,6 +240,7 @@
             const condicao = document.getElementById("condicaoAnimal").value;
             const desc = document.getElementById("ocorrenciaDesc").value || "Resgate animal registado em Patos-PB";
             const notas = document.getElementById("notasTratamento").value;
+            const custo = document.getElementById("custoCaso").value || "0.00";
             let hist = JSON.parse(localStorage.getItem("atendimentos") || "[]");
             
             hist.unshift({ 
@@ -239,12 +248,14 @@
                 titulo: `${especie} - ${condicao}`,
                 desc, 
                 notas,
+                custo,
                 data: new Date().toLocaleDateString() + ' ' + new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) 
             });
             
             localStorage.setItem("atendimentos", JSON.stringify(hist));
             document.getElementById("ocorrenciaDesc").value = "";
             document.getElementById("notasTratamento").value = "";
+            document.getElementById("custoCaso").value = "";
             carregarAtendimentos();
         }
 
@@ -279,6 +290,7 @@
                     </div>
                     <div class="text-slate-200">${item.desc}</div>
                     ${item.notas ? `<div class="text-[10px] text-teal-400">Nota: ${item.notas}</div>` : ''}
+                    ${item.custo && item.custo !== "0.00" ? `<div class="text-[10px] text-amber-400 font-semibold">Custo: R$ ${item.custo}</div>` : ''}
                     <div class="flex justify-end gap-2 pt-1">
                         <button onclick="partilharCaso(${index})" class="text-[10px] text-teal-400 hover:text-teal-300 font-semibold"><i class="fa-solid fa-share-nodes"></i> Partilhar Caso</button>
                     </div>
@@ -290,7 +302,7 @@
             let hist = JSON.parse(localStorage.getItem("atendimentos") || "[]");
             let item = hist[index];
             if (!item) return;
-            let textoPost = `🚨 *APOIO À CAUSA ANIMAL - PATOS/PB* 🚨\n\nOcorrência: ${item.titulo}\nDetalhes: ${item.desc}\n${item.notas ? 'Cuidados: '+item.notas+'\n':''}Data: ${item.data}\n\nJunte-se a esta causa e proteja os animais de rua! 🐾`;
+            let textoPost = `🚨 *APOIO À CAUSA ANIMAL - PATOS/PB* 🚨\n\nOcorrência: ${item.titulo}\nDetalhes: ${item.desc}\n${item.notas ? 'Cuidados: '+item.notas+'\n':''}${item.custo && item.custo !== "0.00" ? 'Custo: R$ '+item.custo+'\n':''}Data: ${item.data}\n\nJunte-se a esta causa e proteja os animais de rua! 🐾`;
             navigator.clipboard.writeText(textoPost).then(() => {
                 alert("Texto do caso copiado! Pronto para colar no Instagram ou WhatsApp.");
             });
@@ -302,10 +314,17 @@
                 alert("Sem registos para exportar.");
                 return;
             }
-            let textoRelatorio = "*Relatório de Resgates Animais - Anjo da Rua*\n\n" + hist.map(i => `• [${i.titulo}] ${i.data}: ${i.desc} ${i.notas ? '('+i.notas+')' : ''}`).join("\n");
+            let textoRelatorio = "*Relatório de Resgates Animais - Anjo da Rua*\n\n" + hist.map(i => `• [${i.titulo}] ${i.data}: ${i.desc} ${i.notas ? '('+i.notas+')':''} ${i.custo && i.custo !== "0.00" ? '[R$ '+i.custo+']':''}`).join("\n");
             navigator.clipboard.writeText(textoRelatorio).then(() => {
                 alert("Relatório de resgates copiado!");
             });
+        }
+
+        function limparHistorico() {
+            if (confirm("Tens a certeza que pretendes apagar todo o histórico de resgates?")) {
+                localStorage.removeItem("atendimentos");
+                carregarAtendimentos();
+            }
         }
 
         function alternarModoNoturno() {
