@@ -1,48 +1,136 @@
 <!DOCTYPE html>
-<html lang="pt">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Resgate Patos - Secure Pro Edition</title>
+    <title>Anjo da Rua - Patos PB</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
-<body class="bg-slate-100 dark:bg-slate-900 text-slate-800 dark:text-slate-100 min-h-screen p-4">
-  <div class="max-w-md mx-auto space-y-4">
-    <!-- Header -->
-    <div class="p-4 bg-teal-700 text-white rounded-2xl shadow-lg">
-      <h1 class="text-xl font-bold">🐾 Resgate Patos</h1>
-      <p class="text-xs text-teal-100">Patos, PB • Secure Pro Edition</p>
-    </div>
+<body class="bg-slate-900 text-slate-100 min-h-screen pb-12">
+    <header class="bg-teal-700 p-4 shadow-lg text-white">
+        <div class="max-w-md mx-auto flex justify-between items-center">
+            <div>
+                <h1 class="text-xl font-bold flex items-center gap-2"><i class="fa-solid fa-shield-dog"></i> Anjo da Rua</h1>
+                <p class="text-xs text-teal-200">Patos, PB • Secure Pro Edition</p>
+            </div>
+            <span class="bg-teal-800 text-teal-100 text-xs px-2.5 py-1 rounded-full font-semibold"><i class="fa-solid fa-circle text-green-400 text-[8px]"></i> Operacional</span>
+        </div>
+    </header>
 
-    <!-- Grid de Contactos de Emergência -->
-    <div class="grid grid-cols-3 gap-3">
-      <a href="tel:193" class="flex flex-col items-center justify-center p-3 bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-100 dark:border-slate-700">
-        <div class="text-2xl mb-1">🚒</div>
-        <span class="text-xs font-semibold">Bombeiros</span>
-        <span class="text-[10px] text-slate-400">193</span>
-      </a>
+    <main class="max-w-md mx-auto p-4 space-y-4">
+        <div class="bg-amber-950/50 border border-amber-600/50 p-3 rounded-xl flex items-start gap-3 shadow-md">
+            <i class="fa-solid fa-triangle-exclamation text-amber-400 text-xl mt-0.5"></i>
+            <div>
+                <h2 class="text-sm font-bold text-amber-200">Alerta Operacional Ativo</h2>
+                <p class="text-xs text-amber-300/80">Platão ativo em Patos-PB. Relate ocorrências urgentes diretamente com os canais abaixo.</p>
+            </div>
+        </div>
 
-      <a href="tel:190" class="flex flex-col items-center justify-center p-3 bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-100 dark:border-slate-700">
-        <div class="text-2xl mb-1">🚨</div>
-        <span class="text-xs font-semibold">Polícia</span>
-        <span class="text-[10px] text-slate-400">190</span>
-      </a>
+        <div class="grid grid-cols-3 gap-2">
+            <a href="tel:193" class="bg-slate-800 p-3 rounded-xl text-center border border-slate-700 hover:border-red-500 transition">
+                <i class="fa-solid fa-fire-engine text-red-400 text-xl mb-1"></i>
+                <div class="text-xs font-bold">Bombeiros</div>
+                <div class="text-[10px] text-slate-400">193</div>
+            </a>
+            <a href="tel:190" class="bg-slate-800 p-3 rounded-xl text-center border border-slate-700 hover:border-blue-500 transition">
+                <i class="fa-solid fa-car-rear text-blue-400 text-xl mb-1"></i>
+                <div class="text-xs font-bold">Polícia</div>
+                <div class="text-[10px] text-slate-400">190</div>
+            </a>
+            <a href="https://wa.me/5583986603681" target="_blank" class="bg-slate-800 p-3 rounded-xl text-center border border-slate-700 hover:border-teal-500 transition">
+                <i class="fa-solid fa-shield text-teal-400 text-xl mb-1"></i>
+                <div class="text-xs font-bold">SGT Patrian</div>
+                <div class="text-[10px] text-teal-300">WhatsApp</div>
+            </a>
+        </div>
 
-      <a href="tel:5583986603681" class="flex flex-col items-center justify-center p-3 bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-100 dark:border-slate-700">
-        <div class="text-2xl mb-1">🛡️</div>
-        <span class="text-xs font-semibold">Patrian Jr.</span>
-        <span class="text-[10px] text-emerald-600 font-medium">83986603681</span>
-      </a>
-    </div>
+        <div class="bg-slate-800 p-4 rounded-xl border border-slate-700 shadow-lg">
+            <h2 class="text-sm font-bold mb-2 flex items-center gap-2"><i class="fa-solid fa-location-crosshairs text-teal-400"></i> Registar Ocorrência & GPS</h2>
+            <textarea id="ocorrenciaDesc" placeholder="Descreva a ocorrência ou animal/situação resgatada..." class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-xs text-white focus:outline-none focus:border-teal-500 h-20 mb-2"></textarea>
+            <div class="flex gap-2">
+                <button onclick="capturarGPS()" class="flex-1 bg-slate-700 hover:bg-slate-600 text-teal-300 text-xs py-2 rounded-lg font-semibold transition flex items-center justify-center gap-1">
+                    <i class="fa-solid fa-crosshairs"></i> Obter GPS
+                </button>
+                <button onclick="enviarOcorrenciaWhatsApp()" class="flex-1 bg-teal-600 hover:bg-teal-500 text-white text-xs py-2 rounded-lg font-semibold transition flex items-center justify-center gap-1">
+                    <i class="fa-brands fa-whatsapp"></i> Enviar SGT
+                </button>
+            </div>
+            <p id="statusGPS" class="text-[10px] text-slate-400 mt-2">GPS não capturado.</p>
+        </div>
 
-    <!-- Barra de Instagram Profissional -->
-    <div class="flex items-center justify-between px-4 py-3 bg-gradient-to-r from-slate-900 to-slate-800 text-white rounded-xl shadow-sm">
-      <div class="flex items-center space-x-2">
-        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-        <span class="text-xs font-medium">Comando Operacional Patos</span>
-      </div>
-      <a href="https://www.instagram.com/sargento_patrian?stkn=ZnFjb21jMzJvbWps" target="_blank" rel="noopener noreferrer" class="text-xs bg-white/10 hover:bg-white/20 px-3 py-1.5 rounded-lg text-pink-300 font-semibold transition-colors">Instagram</a>
-    </div>
-  </div>
+        <div class="bg-slate-800 p-4 rounded-xl border border-slate-700 shadow-lg">
+            <div class="flex justify-between items-center mb-2">
+                <h2 class="text-sm font-bold flex items-center gap-2"><i class="fa-solid fa-list-check text-teal-400"></i> Histórico de Atendimentos</h2>
+                <button onclick="registarAtendimento()" class="bg-teal-600 hover:bg-teal-500 text-white text-[10px] px-2.5 py-1 rounded font-semibold">+ Novo</button>
+            </div>
+            <div id="listaAtendimentos" class="space-y-2 max-h-36 overflow-y-auto text-xs">
+                <p class="text-slate-400 text-center py-2">Nenhum registo recente.</p>
+            </div>
+        </div>
+
+        <div class="bg-slate-800 p-4 rounded-xl border border-slate-700 shadow-lg">
+            <h2 class="text-sm font-bold mb-2 flex items-center gap-2"><i class="fa-solid fa-address-book text-teal-400"></i> Úteis Patos-PB</h2>
+            <div class="grid grid-cols-2 gap-2 text-xs">
+                <a href="tel:199" class="bg-slate-900 p-2 rounded border border-slate-700 flex justify-between items-center">
+                    <span>Defesa Civil</span>
+                    <span class="text-teal-400 font-bold">199</span>
+                </a>
+                <a href="tel:192" class="bg-slate-900 p-2 rounded border border-slate-700 flex justify-between items-center">
+                    <span>SAMU</span>
+                    <span class="text-teal-400 font-bold">192</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="text-center pt-2">
+            <a href="https://www.instagram.com/sargento_patrian?stkn=ZnFjb21jMzJvbWps" target="_blank" class="inline-flex items-center gap-2 bg-gradient-to-r from-purple-600 to-pink-600 text-white text-xs px-4 py-2 rounded-xl font-semibold shadow">
+                <i class="fa-brands fa-instagram text-sm"></i> Instagram SGT Patrian
+            </a>
+        </div>
+    </main>
+
+    <script>
+        let gpsCoord = "";
+        function capturarGPS() {
+            const status = document.getElementById("statusGPS");
+            if (!navigator.geolocation) {
+                status.innerText = "Geolocalização não suportada.";
+                return;
+            }
+            status.innerText = "A obter localização...";
+            navigator.geolocation.getCurrentPosition((pos) => {
+                gpsCoord = `https://maps.google.com/?q=${pos.coords.latitude},${pos.coords.longitude}`;
+                status.innerText = "GPS obtido com sucesso!";
+            }, () => {
+                status.innerText = "Erro ao obter GPS.";
+            });
+        }
+
+        function enviarOcorrenciaWhatsApp() {
+            const desc = document.getElementById("ocorrenciaDesc").value;
+            const texto = `*Ocorrência Anjo da Rua*\nDescrição: ${desc}\nLocalização: ${gpsCoord || "Não informada"}`;
+            window.open(`https://wa.me/5583986603681?text=${encodeURIComponent(texto)}`, "_blank");
+        }
+
+        function registarAtendimento() {
+            const desc = document.getElementById("ocorrenciaDesc").value || "Atendimento operacional padrão";
+            let hist = JSON.parse(localStorage.getItem("atendimentos") || "[]");
+            hist.unshift({ desc, data: new Date().toLocaleDateString() });
+            localStorage.setItem("atendimentos", JSON.stringify(hist));
+            carregarAtendimentos();
+        }
+
+        function carregarAtendimentos() {
+            let hist = JSON.parse(localStorage.getItem("atendimentos") || "[]");
+            const div = document.getElementById("listaAtendimentos");
+            if (hist.length === 0) {
+                div.innerHTML = '<p class="text-slate-400 text-center py-2">Nenhum registo recente.</p>';
+                return;
+            }
+            div.innerHTML = hist.map(item => `<div class="bg-slate-900 p-2 rounded border border-slate-700 flex justify-between"><span>${item.desc}</span><span class="text-slate-400 text-[10px]">${item.data}</span></div>`).join("");
+        }
+        carregarAtendimentos();
+    </script>
 </body>
 </html>
