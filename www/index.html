@@ -14,11 +14,28 @@
                 <h1 class="text-xl font-bold flex items-center gap-2"><i class="fa-solid fa-shield-dog"></i> Anjo da Rua</h1>
                 <p class="text-xs text-teal-200">Patos, PB • Secure Pro Edition</p>
             </div>
-            <span class="bg-teal-800 text-teal-100 text-xs px-2.5 py-1 rounded-full font-semibold"><i class="fa-solid fa-circle text-green-400 text-[8px]"></i> Operacional</span>
+            <div class="flex items-center gap-2">
+                <span id="badgeOperacional" class="bg-teal-800 text-teal-100 text-xs px-2.5 py-1 rounded-full font-semibold flex items-center gap-1">
+                    <i class="fa-solid fa-circle text-green-400 text-[8px]"></i> <span id="txtStatusOp">Operacional</span>
+                </span>
+            </div>
         </div>
     </header>
 
     <main class="max-w-md mx-auto p-4 space-y-4">
+        <!-- Estatísticas Rápidas -->
+        <div class="grid grid-cols-2 gap-2">
+            <div class="bg-slate-800 p-3 rounded-xl border border-slate-700 text-center">
+                <div class="text-[10px] text-slate-400 uppercase font-semibold">Total Registados</div>
+                <div id="statTotal" class="text-lg font-bold text-teal-400">0</div>
+            </div>
+            <div class="bg-slate-800 p-3 rounded-xl border border-slate-700 text-center flex flex-col justify-center items-center">
+                <button onclick="alternarModoNoturno()" class="text-xs bg-slate-700 hover:bg-slate-600 text-teal-300 px-3 py-1.5 rounded-lg font-semibold transition flex items-center gap-1">
+                    <i class="fa-solid fa-moon text-teal-400"></i> <span id="txtModo">Modo Noturno</span>
+                </button>
+            </div>
+        </div>
+
         <div class="bg-amber-950/50 border border-amber-600/50 p-3 rounded-xl flex items-start gap-3 shadow-md">
             <i class="fa-solid fa-triangle-exclamation text-amber-400 text-xl mt-0.5"></i>
             <div>
@@ -45,10 +62,29 @@
             </a>
         </div>
 
-        <div class="bg-slate-800 p-4 rounded-xl border border-slate-700 shadow-lg">
-            <h2 class="text-sm font-bold mb-2 flex items-center gap-2"><i class="fa-solid fa-location-crosshairs text-teal-400"></i> Registar Ocorrência & GPS</h2>
-            <textarea id="ocorrenciaDesc" placeholder="Descreva a ocorrência ou animal/situação resgatada..." class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-xs text-white focus:outline-none focus:border-teal-500 h-20 mb-2"></textarea>
-            <div class="flex gap-2">
+        <!-- Registo de Ocorrência & Funcionalidades Novas -->
+        <div class="bg-slate-800 p-4 rounded-xl border border-slate-700 shadow-lg space-y-3">
+            <h2 class="text-sm font-bold flex items-center gap-2"><i class="fa-solid fa-location-crosshairs text-teal-400"></i> Registar Ocorrência & GPS</h2>
+            
+            <textarea id="ocorrenciaDesc" placeholder="Descreva a ocorrência ou animal/situação resgatada..." class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-xs text-white focus:outline-none focus:border-teal-500 h-20"></textarea>
+            
+            <!-- Seletor de Urgência -->
+            <div>
+                <label class="text-[10px] text-slate-400 block mb-1">Nível de Urgência:</label>
+                <select id="nivelUrgencia" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-xs text-white focus:outline-none focus:border-teal-500">
+                    <option value="🟢 Normal / Rotina">🟢 Normal / Rotina</option>
+                    <option value="🟡 Atenção / Moderado">🟡 Atenção / Moderado</option>
+                    <option value="🔴 URGENTE / Crítico">🔴 URGENTE / Crítico</option>
+                </select>
+            </div>
+
+            <!-- Anexo de Foto Opcional -->
+            <div>
+                <label class="text-[10px] text-slate-400 block mb-1">Anexar Registo Fotográfico:</label>
+                <input type="file" id="fotoOcorrencia" accept="image/*" class="w-full text-xs text-slate-400 file:mr-2 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-slate-700 file:text-teal-300 hover:file:bg-slate-600">
+            </div>
+
+            <div class="flex gap-2 pt-1">
                 <button onclick="capturarGPS()" class="flex-1 bg-slate-700 hover:bg-slate-600 text-teal-300 text-xs py-2 rounded-lg font-semibold transition flex items-center justify-center gap-1">
                     <i class="fa-solid fa-crosshairs"></i> Obter GPS
                 </button>
@@ -56,15 +92,15 @@
                     <i class="fa-brands fa-whatsapp"></i> Enviar SGT
                 </button>
             </div>
-            <p id="statusGPS" class="text-[10px] text-slate-400 mt-2">GPS não capturado.</p>
+            <p id="statusGPS" class="text-[10px] text-slate-400">GPS não capturado.</p>
         </div>
 
         <div class="bg-slate-800 p-4 rounded-xl border border-slate-700 shadow-lg">
             <div class="flex justify-between items-center mb-2">
                 <h2 class="text-sm font-bold flex items-center gap-2"><i class="fa-solid fa-list-check text-teal-400"></i> Histórico de Atendimentos</h2>
-                <button onclick="registarAtendimento()" class="bg-teal-600 hover:bg-teal-500 text-white text-[10px] px-2.5 py-1 rounded font-semibold">+ Novo</button>
+                <button onclick="registarAtendimento()" class="bg-teal-600 hover:bg-teal-500 text-white text-[10px] px-2.5 py-1 rounded font-semibold">+ Guardar</button>
             </div>
-            <div id="listaAtendimentos" class="space-y-2 max-h-36 overflow-y-auto text-xs">
+            <div id="listaAtendimentos" class="space-y-2 max-h-40 overflow-y-auto text-xs">
                 <p class="text-slate-400 text-center py-2">Nenhum registo recente.</p>
             </div>
         </div>
@@ -92,6 +128,8 @@
 
     <script>
         let gpsCoord = "";
+        let modoEscuroAtivo = true;
+
         function capturarGPS() {
             const status = document.getElementById("statusGPS");
             if (!navigator.geolocation) {
@@ -109,27 +147,60 @@
 
         function enviarOcorrenciaWhatsApp() {
             const desc = document.getElementById("ocorrenciaDesc").value;
-            const texto = `*Ocorrência Anjo da Rua*\nDescrição: ${desc}\nLocalização: ${gpsCoord || "Não informada"}`;
+            const urgencia = document.getElementById("nivelUrgencia").value;
+            const texto = `*Ocorrência Anjo da Rua*\nUrgência: ${urgencia}\nDescrição: ${desc}\nLocalização: ${gpsCoord || "Não informada"}`;
             window.open(`https://wa.me/5583986603681?text=${encodeURIComponent(texto)}`, "_blank");
         }
 
         function registarAtendimento() {
             const desc = document.getElementById("ocorrenciaDesc").value || "Atendimento operacional padrão";
+            const urgencia = document.getElementById("nivelUrgencia").value;
             let hist = JSON.parse(localStorage.getItem("atendimentos") || "[]");
-            hist.unshift({ desc, data: new Date().toLocaleDateString() });
+            
+            hist.unshift({ 
+                desc, 
+                urgencia, 
+                data: new Date().toLocaleDateString() + ' ' + new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) 
+            });
+            
             localStorage.setItem("atendimentos", JSON.stringify(hist));
+            document.getElementById("ocorrenciaDesc").value = "";
             carregarAtendimentos();
         }
 
         function carregarAtendimentos() {
             let hist = JSON.parse(localStorage.getItem("atendimentos") || "[]");
             const div = document.getElementById("listaAtendimentos");
+            document.getElementById("statTotal").innerText = hist.length;
+
             if (hist.length === 0) {
                 div.innerHTML = '<p class="text-slate-400 text-center py-2">Nenhum registo recente.</p>';
                 return;
             }
-            div.innerHTML = hist.map(item => `<div class="bg-slate-900 p-2 rounded border border-slate-700 flex justify-between"><span>${item.desc}</span><span class="text-slate-400 text-[10px]">${item.data}</span></div>`).join("");
+            div.innerHTML = hist.map(item => `
+                <div class="bg-slate-900 p-2.5 rounded border border-slate-700 space-y-1">
+                    <div class="flex justify-between items-center text-[10px]">
+                        <span class="font-bold text-teal-300">${item.urgencia}</span>
+                        <span class="text-slate-400">${item.data}</span>
+                    </div>
+                    <div class="text-slate-200">${item.desc}</div>
+                </div>
+            `).join("");
         }
+
+        function alternarModoNoturno() {
+            modoEscuroAtivo = !modoEscuroAtivo;
+            const body = document.body;
+            const txtModo = document.getElementById("txtModo");
+            if (modoEscuroAtivo) {
+                body.className = "bg-slate-900 text-slate-100 min-h-screen pb-12";
+                txtModo.innerText = "Modo Noturno";
+            } else {
+                body.className = "bg-slate-100 text-slate-900 min-h-screen pb-12";
+                txtModo.innerText = "Modo Claro";
+            }
+        }
+
         carregarAtendimentos();
     </script>
 </body>
