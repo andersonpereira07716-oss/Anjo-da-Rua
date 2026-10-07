@@ -7,132 +7,156 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
-<body class="bg-slate-900 text-slate-100 min-h-screen pb-12 transition-colors duration-300" id="corpoApp">
-    <header class="bg-teal-700 p-4 shadow-lg text-white">
+<body class="bg-slate-950 text-slate-100 min-h-screen pb-12 transition-colors duration-300" id="corpoApp">
+    
+    <!-- Cabeçalho Limpo -->
+    <header class="bg-teal-700/90 backdrop-blur-md sticky top-0 z-50 p-4 shadow-md border-b border-teal-600/30">
         <div class="max-w-md mx-auto flex justify-between items-center">
             <div>
-                <h1 class="text-xl font-bold flex items-center gap-2"><i class="fa-solid fa-paw"></i> Anjo da Rua <span class="text-[10px] bg-teal-900 px-2 py-0.5 rounded-full">v2.0 PRO</span></h1>
-                <p class="text-xs text-teal-200">Patos, PB • Proteção Animal</p>
+                <h1 class="text-lg font-bold flex items-center gap-2"><i class="fa-solid fa-paw text-teal-200"></i> Anjo da Rua <span class="text-[9px] bg-teal-900/80 px-2 py-0.5 rounded-full text-teal-300 font-normal">PRO</span></h1>
+                <p class="text-[11px] text-teal-100/80">Patos, PB • Proteção Animal</p>
             </div>
-            <button onclick="alternarEstadoPlantao()" id="btnStatusOp" class="bg-teal-800 hover:bg-teal-900 text-teal-100 text-xs px-2.5 py-1.5 rounded-full font-semibold flex items-center gap-1 transition shadow">
-                <i id="iconeStatus" class="fa-solid fa-circle text-green-400 text-[8px]"></i> <span id="txtStatusOp">Operacional</span>
+            <button onclick="alternarEstadoPlantao()" id="btnStatusOp" class="bg-teal-900/80 hover:bg-teal-900 text-teal-200 text-xs px-3 py-1.5 rounded-full font-medium flex items-center gap-1.5 transition border border-teal-600/40">
+                <i id="iconeStatus" class="fa-solid fa-circle text-green-400 text-[7px]"></i> <span id="txtStatusOp">Operacional</span>
             </button>
         </div>
     </header>
 
     <main class="max-w-md mx-auto p-4 space-y-4">
+        
         <!-- Estatísticas & Modo Noturno -->
-        <div class="grid grid-cols-2 gap-2">
-            <div class="bg-slate-800 p-3 rounded-xl border border-slate-700 text-center shadow">
-                <div class="text-[10px] text-slate-400 uppercase font-semibold">Resgates / Casos</div>
-                <div id="statTotal" class="text-lg font-bold text-teal-400">0</div>
+        <div class="grid grid-cols-2 gap-2.5">
+            <div class="bg-slate-900/90 p-3 rounded-xl border border-slate-800 flex items-center justify-between shadow-sm">
+                <div>
+                    <div class="text-[10px] text-slate-400 font-medium uppercase">Casos Registados</div>
+                    <div id="statTotal" class="text-xl font-bold text-teal-400">0</div>
+                </div>
+                <div class="bg-teal-950/60 p-2.5 rounded-lg text-teal-400 border border-teal-800/30">
+                    <i class="fa-solid fa-clipboard-list text-sm"></i>
+                </div>
             </div>
-            <div class="bg-slate-800 p-3 rounded-xl border border-slate-700 text-center flex flex-col justify-center items-center shadow">
-                <button onclick="alternarModoNoturno()" class="text-xs bg-slate-700 hover:bg-slate-600 text-teal-300 px-3 py-1.5 rounded-lg font-semibold transition flex items-center gap-1">
-                    <i id="iconeModo" class="fa-solid fa-moon text-teal-400"></i> <span id="txtModo">Modo Noturno</span>
+            <div class="bg-slate-900/90 p-3 rounded-xl border border-slate-800 flex items-center justify-between shadow-sm">
+                <div>
+                    <div class="text-[10px] text-slate-400 font-medium uppercase">Aparência</div>
+                    <div id="txtModo" class="text-xs font-bold text-slate-200">Noturno</div>
+                </div>
+                <button onclick="alternarModoNoturno()" class="bg-slate-800 hover:bg-slate-700 p-2.5 rounded-lg text-teal-400 border border-slate-700/50 transition">
+                    <i id="iconeModo" class="fa-solid fa-moon text-sm"></i>
                 </button>
             </div>
         </div>
 
-        <!-- Botão SOS Resgate Animal -->
-        <div class="bg-gradient-to-r from-red-900/80 to-rose-950 border border-red-500/50 p-3 rounded-xl flex items-center justify-between shadow-lg">
+        <!-- Botão SOS Resgate Animal (Destaque Crítico) -->
+        <div class="bg-gradient-to-r from-red-950 via-red-900/80 to-rose-950 border border-red-500/40 p-3.5 rounded-2xl flex items-center justify-between shadow-lg">
             <div class="flex items-center gap-3">
-                <div class="bg-red-600 text-white p-2.5 rounded-lg animate-pulse">
-                    <i class="fa-solid fa-dog text-lg"></i>
+                <div class="bg-red-600 text-white p-2.5 rounded-xl shadow-md animate-pulse">
+                    <i class="fa-solid fa-triangle-exclamation text-base"></i>
                 </div>
                 <div>
-                    <h2 class="text-xs font-bold text-red-200">SOS Animal URGENTE</h2>
-                    <p class="text-[10px] text-red-300">Acionar socorro imediato para animal em perigo.</p>
+                    <h2 class="text-xs font-bold text-red-100">SOS Animal URGENTE</h2>
+                    <p class="text-[10px] text-red-300">Acionar socorro imediato via WhatsApp.</p>
                 </div>
             </div>
-            <button onclick="enviarSOSAnimal()" class="bg-red-600 hover:bg-red-500 text-white text-xs font-bold px-3 py-2 rounded-lg shadow transition">
+            <button onclick="enviarSOSAnimal()" class="bg-red-600 hover:bg-red-500 text-white text-xs font-bold px-3.5 py-2 rounded-xl shadow transition transform active:scale-95">
                 SOS 🚨
             </button>
         </div>
 
-        <!-- Painel de Emergências Gerais -->
-        <div class="grid grid-cols-3 gap-2">
-            <a href="tel:193" class="bg-slate-800 p-3 rounded-xl text-center border border-slate-700 hover:border-red-500 transition shadow">
-                <i class="fa-solid fa-fire-engine text-red-400 text-xl mb-1"></i>
-                <div class="text-xs font-bold">Bombeiros</div>
-                <div class="text-[10px] text-slate-400">193</div>
+        <!-- Emergências e Órgãos (Consolidado) -->
+        <div class="grid grid-cols-4 gap-2">
+            <a href="tel:193" class="bg-slate-900/80 hover:bg-slate-800 p-2.5 rounded-xl text-center border border-slate-800 transition flex flex-col items-center justify-center">
+                <i class="fa-solid fa-fire-engine text-red-400 text-base mb-1"></i>
+                <span class="text-[10px] font-bold text-slate-200">Bombeiros</span>
+                <span class="text-[9px] text-slate-400">193</span>
             </a>
-            <a href="tel:190" class="bg-slate-800 p-3 rounded-xl text-center border border-slate-700 hover:border-blue-500 transition shadow">
-                <i class="fa-solid fa-car-rear text-blue-400 text-xl mb-1"></i>
-                <div class="text-xs font-bold">Polícia</div>
-                <div class="text-[10px] text-slate-400">190</div>
+            <a href="tel:190" class="bg-slate-900/80 hover:bg-slate-800 p-2.5 rounded-xl text-center border border-slate-800 transition flex flex-col items-center justify-center">
+                <i class="fa-solid fa-car-rear text-blue-400 text-base mb-1"></i>
+                <span class="text-[10px] font-bold text-slate-200">Polícia</span>
+                <span class="text-[9px] text-slate-400">190</span>
             </a>
-            <a href="https://wa.me/5583986603681" target="_blank" class="bg-slate-800 p-3 rounded-xl text-center border border-slate-700 hover:border-teal-500 transition shadow">
-                <i class="fa-solid fa-shield text-teal-400 text-xl mb-1"></i>
-                <div class="text-xs font-bold">SGT Patrian</div>
-                <div class="text-[10px] text-teal-300">WhatsApp</div>
+            <a href="tel:199" class="bg-slate-900/80 hover:bg-slate-800 p-2.5 rounded-xl text-center border border-slate-800 transition flex flex-col items-center justify-center">
+                <i class="fa-solid fa-building-shield text-amber-400 text-base mb-1"></i>
+                <span class="text-[10px] font-bold text-slate-200">Defesa Civil</span>
+                <span class="text-[9px] text-slate-400">199</span>
+            </a>
+            <a href="https://wa.me/5583986603681" target="_blank" class="bg-slate-900/80 hover:bg-slate-800 p-2.5 rounded-xl text-center border border-slate-800 transition flex flex-col items-center justify-center">
+                <i class="fa-solid fa-shield-halved text-teal-400 text-base mb-1"></i>
+                <span class="text-[10px] font-bold text-slate-200">SGT Patrian</span>
+                <span class="text-[9px] text-teal-400">Zap</span>
             </a>
         </div>
 
-        <!-- Registo de Ocorrência Animal & GPS -->
-        <div class="bg-slate-800 p-4 rounded-xl border border-slate-700 shadow-lg space-y-3">
-            <h2 class="text-sm font-bold flex items-center gap-2"><i class="fa-solid fa-shield-dog text-teal-400"></i> Registar Ocorrência Animal</h2>
+        <!-- Formulário de Registo de Ocorrência (Layout Limpo sem excesso de caixas) -->
+        <div class="bg-slate-900/90 p-4 rounded-2xl border border-slate-800 shadow-md space-y-3.5">
+            <div class="flex items-center gap-2 border-b border-slate-800 pb-2.5">
+                <i class="fa-solid fa-pen-to-square text-teal-400 text-sm"></i>
+                <h2 class="text-xs font-bold uppercase tracking-wider text-slate-200">Registar Ocorrência Animal</h2>
+            </div>
             
-            <div class="grid grid-cols-2 gap-2">
+            <div class="grid grid-cols-2 gap-2.5">
                 <div>
-                    <label class="text-[10px] text-slate-400 block mb-1">Espécie:</label>
-                    <select id="especieAnimal" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-xs text-white focus:outline-none focus:border-teal-500">
+                    <label class="text-[10px] text-slate-400 block mb-1 font-medium">Espécie</label>
+                    <select id="especieAnimal" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2.5 text-xs text-white focus:outline-none focus:border-teal-500 transition">
                         <option value="🐕 Cão">🐕 Cão</option>
                         <option value="🐈 Gato">🐈 Gato</option>
                         <option value="🐎 Outro / Equídeo">🐎 Outro / Equídeo</option>
                     </select>
                 </div>
                 <div>
-                    <label class="text-[10px] text-slate-400 block mb-1">Condição:</label>
-                    <select id="condicaoAnimal" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-xs text-white focus:outline-none focus:border-teal-500">
+                    <label class="text-[10px] text-slate-400 block mb-1 font-medium">Condição</label>
+                    <select id="condicaoAnimal" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2.5 text-xs text-white focus:outline-none focus:border-teal-500 transition">
                         <option value="🔴 Atropelado / Ferido">🔴 Atropelado / Ferido</option>
-                        <option value="🟠 Maus-tratos / Agressão">🟠 Maus-tratos / Agressão</option>
+                        <option value="🟠 Maus-tratos">🟠 Maus-tratos</option>
                         <option value="🟡 Doente / Desnutrido">🟡 Doente / Desnutrido</option>
-                        <option value="🟢 Abandonado / Perdido">🟢 Abandonado / Perdido</option>
+                        <option value="🟢 Abandonado">🟢 Abandonado</option>
                     </select>
                 </div>
             </div>
 
-            <textarea id="ocorrenciaDesc" placeholder="Descreva os detalhes do animal, raça aparente, cor e ponto de referência exato..." class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-xs text-white focus:outline-none focus:border-teal-500 h-20"></textarea>
+            <div>
+                <label class="text-[10px] text-slate-400 block mb-1 font-medium">Descrição e Localização de Referência</label>
+                <textarea id="ocorrenciaDesc" placeholder="Descreva os detalhes do animal, cor, raça e ponto de referência exato em Patos..." class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2.5 text-xs text-white focus:outline-none focus:border-teal-500 h-20 resize-none transition"></textarea>
+            </div>
             
-            <div class="grid grid-cols-2 gap-2">
+            <div class="grid grid-cols-2 gap-2.5">
                 <div>
-                    <label class="text-[10px] text-slate-400 block mb-1">Notas / Tratamento:</label>
-                    <input type="text" id="notasTratamento" placeholder="Ex: Hidratado, medicação..." class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-xs text-white focus:outline-none focus:border-teal-500">
+                    <label class="text-[10px] text-slate-400 block mb-1 font-medium">Notas / Tratamento</label>
+                    <input type="text" id="notasTratamento" placeholder="Ex: Hidratado, medicação..." class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2.5 text-xs text-white focus:outline-none focus:border-teal-500 transition">
                 </div>
                 <div>
-                    <label class="text-[10px] text-slate-400 block mb-1">Custo Estimado (R$):</label>
-                    <input type="number" id="custoCaso" placeholder="0.00" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-xs text-white focus:outline-none focus:border-teal-500">
+                    <label class="text-[10px] text-slate-400 block mb-1 font-medium">Custo Estimado (R$)</label>
+                    <input type="number" id="custoCaso" placeholder="0.00" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2.5 text-xs text-white focus:outline-none focus:border-teal-500 transition">
                 </div>
             </div>
 
-            <!-- Captura de Imagem / Foto -->
             <div>
-                <label class="text-[10px] text-slate-400 block mb-1">Foto da Ocorrência:</label>
-                <input type="file" id="fotoOcorrencia" accept="image/*" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-1 text-[11px] text-slate-300 file:mr-2 file:py-1 file:px-3 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-teal-700 file:text-white hover:file:bg-teal-600">
+                <label class="text-[10px] text-slate-400 block mb-1 font-medium">Foto da Ocorrência (Opcional)</label>
+                <input type="file" id="fotoOcorrencia" accept="image/*" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-1.5 text-[11px] text-slate-400 file:mr-2 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-[10px] file:font-semibold file:bg-teal-700 file:text-white hover:file:bg-teal-600 transition">
             </div>
 
             <div class="flex gap-2 pt-1">
-                <button onclick="capturarGPS()" class="flex-1 bg-slate-700 hover:bg-slate-600 text-teal-300 text-xs py-2 rounded-lg font-semibold transition flex items-center justify-center gap-1 shadow">
+                <button onclick="capturarGPS()" class="flex-1 bg-slate-800 hover:bg-slate-700 text-teal-300 text-xs py-2.5 rounded-xl font-medium transition flex items-center justify-center gap-1.5 border border-slate-700/50">
                     <i class="fa-solid fa-crosshairs"></i> Obter GPS
                 </button>
-                <button onclick="enviarOcorrenciaWhatsApp()" class="flex-1 bg-teal-600 hover:bg-teal-500 text-white text-xs py-2 rounded-lg font-semibold transition flex items-center justify-center gap-1 shadow">
-                    <i class="fa-brands fa-whatsapp"></i> Enviar SGT
+                <button onclick="enviarOcorrenciaWhatsApp()" class="flex-1 bg-teal-600 hover:bg-teal-500 text-white text-xs py-2.5 rounded-xl font-bold transition flex items-center justify-center gap-1.5 shadow-md">
+                    <i class="fa-brands fa-whatsapp text-sm"></i> Enviar SGT
                 </button>
             </div>
             
-            <div id="containerRota" class="hidden">
-                <a id="linkRotaGPS" href="#" target="_blank" class="w-full bg-blue-600 hover:bg-blue-500 text-white text-xs py-2 rounded-lg font-semibold transition flex items-center justify-center gap-1 shadow">
+            <div id="containerRota" class="hidden pt-1">
+                <a id="linkRotaGPS" href="#" target="_blank" class="w-full bg-blue-600 hover:bg-blue-500 text-white text-xs py-2.5 rounded-xl font-medium transition flex items-center justify-center gap-1.5 shadow">
                     <i class="fa-solid fa-map-location-dot"></i> Abrir Rota no Google Maps
                 </a>
             </div>
             <p id="statusGPS" class="text-[10px] text-slate-400 text-center">GPS não capturado.</p>
         </div>
 
-        <!-- Guia Rápido de Primeiros Socorros -->
-        <div class="bg-slate-800 p-4 rounded-xl border border-slate-700 shadow-lg space-y-2">
-            <h2 class="text-sm font-bold flex items-center gap-2"><i class="fa-solid fa-kit-medical text-teal-400"></i> Guia Rápido de Socorro Animal</h2>
-            <div class="text-[11px] text-slate-300 space-y-1.5 bg-slate-900 p-3 rounded-lg border border-slate-700">
+        <!-- Guia Rápido Colapsável / Limpo -->
+        <div class="bg-slate-900/90 p-4 rounded-2xl border border-slate-800 shadow-md space-y-2">
+            <h2 class="text-xs font-bold uppercase tracking-wider text-teal-400 flex items-center gap-2">
+                <i class="fa-solid fa-kit-medical"></i> Guia Rápido de Primeiros Socorros
+            </h2>
+            <div class="text-[11px] text-slate-300 space-y-1.5 bg-slate-950 p-3 rounded-xl border border-slate-800/80 leading-relaxed">
                 <p>• <b>Atropelados:</b> Não puxe bruscamente. Use uma manta ou papelão firme como maca para evitar lesões na coluna.</p>
                 <p>• <b>Agressivos por dor:</b> Animais assustados podem morder. Cubra a cabeça com cuidado com um pano se precisar de os mover.</p>
                 <p>• <b>Hidratação:</b> Ofereça água limpa fresca num recipiente raso, mas nunca force líquidos se estiver inconsciente.</p>
@@ -140,46 +164,34 @@
         </div>
 
         <!-- Histórico de Resgates -->
-        <div class="bg-slate-800 p-4 rounded-xl border border-slate-700 shadow-lg space-y-3">
+        <div class="bg-slate-900/90 p-4 rounded-2xl border border-slate-800 shadow-md space-y-3">
             <div class="flex justify-between items-center">
-                <h2 class="text-sm font-bold flex items-center gap-2"><i class="fa-solid fa-list-check text-teal-400"></i> Histórico de Resgates</h2>
-                <div class="flex gap-1">
-                    <button onclick="copiarRelatorio()" title="Copiar Relatório" class="bg-slate-700 hover:bg-slate-600 text-teal-300 text-[10px] px-2 py-1 rounded font-semibold"><i class="fa-solid fa-copy"></i></button>
-                    <button onclick="limparHistorico()" title="Apagar Histórico" class="bg-rose-900/60 hover:bg-rose-800 text-rose-200 text-[10px] px-2 py-1 rounded font-semibold"><i class="fa-solid fa-trash"></i></button>
-                    <button onclick="registarAtendimento()" class="bg-teal-600 hover:bg-teal-500 text-white text-[10px] px-2.5 py-1 rounded font-semibold shadow">+ Guardar</button>
+                <h2 class="text-xs font-bold uppercase tracking-wider text-slate-200 flex items-center gap-2">
+                    <i class="fa-solid fa-list-check text-teal-400"></i> Histórico de Resgates
+                </h2>
+                <div class="flex gap-1.5">
+                    <button onclick="copiarRelatorio()" title="Copiar Relatório" class="bg-slate-800 hover:bg-slate-700 text-teal-300 text-[10px] px-2.5 py-1.5 rounded-lg font-medium border border-slate-700/50"><i class="fa-solid fa-copy"></i></button>
+                    <button onclick="limparHistorico()" title="Apagar Histórico" class="bg-rose-950/80 hover:bg-rose-900 text-rose-300 text-[10px] px-2.5 py-1.5 rounded-lg font-medium border border-rose-800/50"><i class="fa-solid fa-trash"></i></button>
+                    <button onclick="registarAtendimento()" class="bg-teal-600 hover:bg-teal-500 text-white text-[10px] px-3 py-1.5 rounded-lg font-bold shadow">+ Guardar</button>
                 </div>
             </div>
 
             <!-- Filtros Rápidos -->
-            <div class="flex gap-1 text-[10px]">
-                <button onclick="filtrarHistorico('TODOS')" id="filtroTodos" class="bg-teal-600 text-white px-2.5 py-1 rounded font-semibold flex-1">Todos</button>
-                <button onclick="filtrarHistorico('Cão')" id="filtroCao" class="bg-slate-700 text-slate-300 px-2.5 py-1 rounded font-semibold flex-1">Cães</button>
-                <button onclick="filtrarHistorico('Gato')" id="filtroGato" class="bg-slate-700 text-slate-300 px-2.5 py-1 rounded font-semibold flex-1">Gatos</button>
+            <div class="flex gap-1.5 text-[10px]">
+                <button onclick="filtrarHistorico('TODOS')" id="filtroTodos" class="bg-teal-600 text-white px-2.5 py-1.5 rounded-lg font-semibold flex-1 transition shadow-sm">Todos</button>
+                <button onclick="filtrarHistorico('Cão')" id="filtroCao" class="bg-slate-800 text-slate-300 px-2.5 py-1.5 rounded-lg font-semibold flex-1 transition border border-slate-700/50">Cães</button>
+                <button onclick="filtrarHistorico('Gato')" id="filtroGato" class="bg-slate-800 text-slate-300 px-2.5 py-1.5 rounded-lg font-semibold flex-1 transition border border-slate-700/50">Gatos</button>
             </div>
             
-            <div id="listaAtendimentos" class="space-y-2 max-h-56 overflow-y-auto text-xs pr-1">
-                <p class="text-slate-400 text-center py-2">Nenhum registo encontrado.</p>
+            <div id="listaAtendimentos" class="space-y-2.5 max-h-60 overflow-y-auto text-xs pr-1">
+                <p class="text-slate-500 text-center py-4 text-[11px]">Nenhum registo encontrado.</p>
             </div>
         </div>
 
-        <!-- Órgãos & Apoio Patos-PB -->
-        <div class="bg-slate-800 p-4 rounded-xl border border-slate-700 shadow-lg space-y-2">
-            <h2 class="text-sm font-bold flex items-center gap-2"><i class="fa-solid fa-address-book text-teal-400"></i> Órgãos & Apoio Patos-PB</h2>
-            <div class="grid grid-cols-2 gap-2 text-xs">
-                <a href="tel:199" class="bg-slate-900 p-2 rounded border border-slate-700 flex justify-between items-center hover:border-teal-500 transition">
-                    <span>Defesa Civil</span>
-                    <span class="text-teal-400 font-bold">199</span>
-                </a>
-                <a href="tel:192" class="bg-slate-900 p-2 rounded border border-slate-700 flex justify-between items-center hover:border-teal-500 transition">
-                    <span>SAMU</span>
-                    <span class="text-teal-400 font-bold">192</span>
-                </a>
-            </div>
-        </div>
-
+        <!-- Rodapé / Instagram Coeso -->
         <div class="text-center pt-2">
-            <a href="https://www.instagram.com/sargento_patrian?stkn=ZnFjb21jMzJvbWps" target="_blank" class="inline-flex items-center gap-2 bg-gradient-to-r from-purple-600 to-pink-600 text-white text-xs px-4 py-2 rounded-xl font-semibold shadow">
-                <i class="fa-brands fa-instagram text-sm"></i> Instagram SGT Patrian
+            <a href="https://www.instagram.com/sargento_patrian?stkn=ZnFjb21jMzJvbWps" target="_blank" class="inline-flex items-center gap-2 bg-slate-900 hover:bg-slate-800 border border-slate-800 text-slate-200 text-xs px-4 py-2.5 rounded-xl font-medium shadow-sm transition">
+                <i class="fa-brands fa-instagram text-pink-400 text-sm"></i> Instagram SGT Patrian
             </a>
         </div>
     </main>
@@ -190,9 +202,9 @@
         let estadoIdx = 0;
         let filtroAtual = "TODOS";
         const estados = [
-            { texto: "Operacional", cor: "bg-teal-800", icone: "text-green-400" },
-            { texto: "Em Resgate", cor: "bg-amber-800", icone: "text-amber-400" },
-            { texto: "Descanso", cor: "bg-slate-700", icone: "text-slate-400" }
+            { texto: "Operacional", cor: "bg-teal-900/80 border-teal-600/40 text-teal-200", icone: "text-green-400" },
+            { texto: "Em Resgate", cor: "bg-amber-900/80 border-amber-600/40 text-amber-200", icone: "text-amber-400" },
+            { texto: "Descanso", cor: "bg-slate-800 border-slate-700 text-slate-300", icone: "text-slate-400" }
         ];
 
         function capturarGPS() {
@@ -236,9 +248,9 @@
             estadoIdx = (estadoIdx + 1) % estados.length;
             const e = estados[estadoIdx];
             const btn = document.getElementById("btnStatusOp");
-            btn.className = `${e.cor} text-teal-100 text-xs px-2.5 py-1.5 rounded-full font-semibold flex items-center gap-1 transition shadow`;
+            btn.className = `${e.cor} text-xs px-3 py-1.5 rounded-full font-medium flex items-center gap-1.5 transition border shadow-sm`;
             document.getElementById("txtStatusOp").innerText = e.texto;
-            document.getElementById("iconeStatus").className = `fa-solid fa-circle ${e.icone} text-[8px]`;
+            document.getElementById("iconeStatus").className = `fa-solid fa-circle ${e.icone} text-[7px]`;
         }
 
         function registarAtendimento() {
@@ -249,7 +261,6 @@
             const custo = document.getElementById("custoCaso").value || "0.00";
             const fileInput = document.getElementById("fotoOcorrencia");
             
-            let imagemUrl = "";
             if (fileInput.files && fileInput.files[0]) {
                 const reader = new FileReader();
                 reader.onload = function(e) {
@@ -296,9 +307,9 @@
 
         function filtrarHistorico(tipo) {
             filtroAtual = tipo;
-            document.getElementById("filtroTodos").className = tipo === 'TODOS' ? "bg-teal-600 text-white px-2.5 py-1 rounded font-semibold flex-1" : "bg-slate-700 text-slate-300 px-2.5 py-1 rounded font-semibold flex-1";
-            document.getElementById("filtroCao" ).className = tipo === 'Cão' ? "bg-teal-600 text-white px-2.5 py-1 rounded font-semibold flex-1" : "bg-slate-700 text-slate-300 px-2.5 py-1 rounded font-semibold flex-1";
-            document.getElementById("filtroGato").className = tipo === 'Gato' ? "bg-teal-600 text-white px-2.5 py-1 rounded font-semibold flex-1" : "bg-slate-700 text-slate-300 px-2.5 py-1 rounded font-semibold flex-1";
+            document.getElementById("filtroTodos").className = tipo === 'TODOS' ? "bg-teal-600 text-white px-2.5 py-1.5 rounded-lg font-semibold flex-1 transition shadow-sm" : "bg-slate-800 text-slate-300 px-2.5 py-1.5 rounded-lg font-semibold flex-1 transition border border-slate-700/50";
+            document.getElementById("filtroCao" ).className = tipo === 'Cão' ? "bg-teal-600 text-white px-2.5 py-1.5 rounded-lg font-semibold flex-1 transition shadow-sm" : "bg-slate-800 text-slate-300 px-2.5 py-1.5 rounded-lg font-semibold flex-1 transition border border-slate-700/50";
+            document.getElementById("filtroGato").className = tipo === 'Gato' ? "bg-teal-600 text-white px-2.5 py-1.5 rounded-lg font-semibold flex-1 transition shadow-sm" : "bg-slate-800 text-slate-300 px-2.5 py-1.5 rounded-lg font-semibold flex-1 transition border border-slate-700/50";
             carregarAtendimentos();
         }
 
@@ -313,30 +324,30 @@
             });
 
             if (histFiltrado.length === 0) {
-                div.innerHTML = '<p class="text-slate-400 text-center py-2">Nenhum registo encontrado.</p>';
+                div.innerHTML = '<p class="text-slate-500 text-center py-4 text-[11px]">Nenhum registo encontrado.</p>';
                 return;
             }
 
             div.innerHTML = histFiltrado.map((item, index) => {
-                let corStatus = "bg-amber-900/80 text-amber-300 border-amber-500/50";
-                if (item.statusCaso === "Em Tratamento") corStatus = "bg-blue-900/80 text-blue-300 border-blue-500/50";
-                if (item.statusCaso === "Concluído") corStatus = "bg-teal-900/80 text-teal-300 border-teal-500/50";
+                let corStatus = "bg-amber-950/80 text-amber-300 border-amber-600/40";
+                if (item.statusCaso === "Em Tratamento") corStatus = "bg-blue-950/80 text-blue-300 border-blue-600/40";
+                if (item.statusCaso === "Concluído") corStatus = "bg-teal-950/80 text-teal-300 border-teal-600/40";
 
                 return `
-                    <div class="bg-slate-900 p-2.5 rounded border border-slate-700 space-y-1.5">
+                    <div class="bg-slate-950 p-3 rounded-xl border border-slate-800 space-y-2">
                         <div class="flex justify-between items-center text-[10px]">
                             <span class="font-bold text-teal-300">${item.titulo}</span>
-                            <button onclick="alterarStatusCaso(${index})" class="px-2 py-0.5 rounded-full border text-[9px] font-semibold ${corStatus}">
+                            <button onclick="alterarStatusCaso(${index})" class="px-2.5 py-0.5 rounded-full border text-[9px] font-semibold ${corStatus} transition">
                                 ${item.statusCaso || 'Pendente'} 🔄
                             </button>
                         </div>
-                        <div class="text-slate-200">${item.desc}</div>
-                        ${item.imagemUrl ? `<img src="${item.imagemUrl}" class="w-full h-24 object-cover rounded-lg border border-slate-700 mt-1">` : ''}
-                        ${item.notas ? `<div class="text-[10px] text-teal-400">Nota: ${item.notas}</div>` : ''}
+                        <div class="text-slate-200 text-xs">${item.desc}</div>
+                        ${item.imagemUrl ? `<img src="${item.imagemUrl}" class="w-full h-28 object-cover rounded-lg border border-slate-800 mt-1">` : ''}
+                        ${item.notas ? `<div class="text-[10px] text-teal-400 font-medium">Nota: ${item.notas}</div>` : ''}
                         ${item.custo && item.custo !== "0.00" ? `<div class="text-[10px] text-amber-400 font-semibold">Custo: R$ ${item.custo}</div>` : ''}
-                        <div class="flex justify-between items-center pt-1 text-[10px]">
-                            <span class="text-slate-400">${item.data}</span>
-                            <button onclick="partilharCaso(${index})" class="text-teal-400 hover:text-teal-300 font-semibold"><i class="fa-solid fa-share-nodes"></i> Partilhar Caso</button>
+                        <div class="flex justify-between items-center pt-1 text-[10px] border-t border-slate-900">
+                            <span class="text-slate-500">${item.data}</span>
+                            <button onclick="partilharCaso(${index})" class="text-teal-400 hover:text-teal-300 font-semibold flex items-center gap-1"><i class="fa-solid fa-share-nodes"></i> Partilhar</button>
                         </div>
                     </div>
                 `;
@@ -378,13 +389,13 @@
             const txtModo = document.getElementById("txtModo");
             const iconeModo = document.getElementById("iconeModo");
             if (modoEscuroAtivo) {
-                corpo.className = "bg-slate-900 text-slate-100 min-h-screen pb-12 transition-colors duration-300";
-                txtModo.innerText = "Modo Noturno";
-                iconeModo.className = "fa-solid fa-moon text-teal-400";
+                corpo.className = "bg-slate-950 text-slate-100 min-h-screen pb-12 transition-colors duration-300";
+                txtModo.innerText = "Noturno";
+                iconeModo.className = "fa-solid fa-moon text-sm text-teal-400";
             } else {
                 corpo.className = "bg-slate-100 text-slate-900 min-h-screen pb-12 transition-colors duration-300";
-                txtModo.innerText = "Modo Claro";
-                iconeModo.className = "fa-solid fa-sun text-amber-500";
+                txtModo.innerText = "Claro";
+                iconeModo.className = "fa-solid fa-sun text-sm text-amber-500";
             }
         }
 
