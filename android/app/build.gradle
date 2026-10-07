@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     namespace = "com.resgate.patos"
-    compileSdk = 34
+    compileSdk = 36
     defaultConfig {
         applicationId "com.resgate.patos"
         minSdkVersion rootProject.ext.minSdkVersion
