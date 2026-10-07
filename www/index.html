@@ -96,8 +96,8 @@
             <textarea id="ocorrenciaDesc" placeholder="Descreva os detalhes do animal, raça aparente, cor e ponto de referência exato..." class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-xs text-white focus:outline-none focus:border-teal-500 h-20"></textarea>
             
             <div>
-                <label class="text-[10px] text-slate-400 block mb-1">Foto do Animal:</label>
-                <input type="file" id="fotoOcorrencia" accept="image/*" class="w-full text-xs text-slate-400 file:mr-2 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-slate-700 file:text-teal-300 hover:file:bg-slate-600">
+                <label class="text-[10px] text-slate-400 block mb-1">Notas de Apoio / Tratamento Inicial:</label>
+                <input type="text" id="notasTratamento" placeholder="Ex: Recebeu água, aguardando transporte..." class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-xs text-white focus:outline-none focus:border-teal-500">
             </div>
 
             <div class="flex gap-2 pt-1">
@@ -187,7 +187,8 @@
             const especie = document.getElementById("especieAnimal").value;
             const condicao = document.getElementById("condicaoAnimal").value;
             const desc = document.getElementById("ocorrenciaDesc").value;
-            const texto = `🐾 *RESGATE ANIMAL - ANJO DA RUA* 🐾\nEspécie: ${especie}\nCondição: ${condicao}\nDetalhes: ${desc}\nLocalização: ${gpsCoord || "Não informada"}`;
+            const notas = document.getElementById("notasTratamento").value;
+            const texto = `🐾 *RESGATE ANIMAL - ANJO DA RUA* 🐾\nEspécie: ${especie}\nCondição: ${condicao}\nDetalhes: ${desc}\nNotas: ${notas || "Nenhuma"}\nLocalização: ${gpsCoord || "Não informada"}`;
             window.open(`https://wa.me/5583986603681?text=${encodeURIComponent(texto)}`, "_blank");
         }
 
@@ -209,16 +210,19 @@
             const especie = document.getElementById("especieAnimal").value;
             const condicao = document.getElementById("condicaoAnimal").value;
             const desc = document.getElementById("ocorrenciaDesc").value || "Resgate animal padrão";
+            const notas = document.getElementById("notasTratamento").value;
             let hist = JSON.parse(localStorage.getItem("atendimentos") || "[]");
             
             hist.unshift({ 
                 titulo: `${especie} - ${condicao}`,
                 desc, 
+                notas,
                 data: new Date().toLocaleDateString() + ' ' + new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) 
             });
             
             localStorage.setItem("atendimentos", JSON.stringify(hist));
             document.getElementById("ocorrenciaDesc").value = "";
+            document.getElementById("notasTratamento").value = "";
             carregarAtendimentos();
         }
 
@@ -238,6 +242,7 @@
                         <span class="text-slate-400">${item.data}</span>
                     </div>
                     <div class="text-slate-200">${item.desc}</div>
+                    ${item.notas ? `<div class="text-[10px] text-teal-400">Nota: ${item.notas}</div>` : ''}
                 </div>
             `).join("");
         }
@@ -248,7 +253,7 @@
                 alert("Sem registos para exportar.");
                 return;
             }
-            let textoRelatorio = "*Relatório de Resgates Animais - Anjo da Rua*\n\n" + hist.map(i => `• [${i.titulo}] ${i.data}: ${i.desc}`).join("\n");
+            let textoRelatorio = "*Relatório de Resgates Animais - Anjo da Rua*\n\n" + hist.map(i => `• [${i.titulo}] ${i.data}: ${i.desc} ${i.notas ? '('+i.notas+')' : ''}`).join("\n");
             navigator.clipboard.writeText(textoRelatorio).then(() => {
                 alert("Relatório de resgates copiado!");
             });
