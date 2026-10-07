@@ -11,7 +11,7 @@
     <header class="bg-teal-700 p-4 shadow-lg text-white">
         <div class="max-w-md mx-auto flex justify-between items-center">
             <div>
-                <h1 class="text-xl font-bold flex items-center gap-2"><i class="fa-solid fa-paw"></i> Anjo da Rua</h1>
+                <h1 class="text-xl font-bold flex items-center gap-2"><i class="fa-solid fa-paw"></i> Anjo da Rua <span class="text-[10px] bg-teal-900 px-2 py-0.5 rounded-full">v2.0 PRO</span></h1>
                 <p class="text-xs text-teal-200">Patos, PB • Proteção Animal</p>
             </div>
             <button onclick="alternarEstadoPlantao()" id="btnStatusOp" class="bg-teal-800 hover:bg-teal-900 text-teal-100 text-xs px-2.5 py-1.5 rounded-full font-semibold flex items-center gap-1 transition shadow">
@@ -106,6 +106,12 @@
                 </div>
             </div>
 
+            <!-- Captura de Imagem / Foto -->
+            <div>
+                <label class="text-[10px] text-slate-400 block mb-1">Foto da Ocorrência:</label>
+                <input type="file" id="fotoOcorrencia" accept="image/*" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-1 text-[11px] text-slate-300 file:mr-2 file:py-1 file:px-3 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-teal-700 file:text-white hover:file:bg-teal-600">
+            </div>
+
             <div class="flex gap-2 pt-1">
                 <button onclick="capturarGPS()" class="flex-1 bg-slate-700 hover:bg-slate-600 text-teal-300 text-xs py-2 rounded-lg font-semibold transition flex items-center justify-center gap-1 shadow">
                     <i class="fa-solid fa-crosshairs"></i> Obter GPS
@@ -151,7 +157,7 @@
                 <button onclick="filtrarHistorico('Gato')" id="filtroGato" class="bg-slate-700 text-slate-300 px-2.5 py-1 rounded font-semibold flex-1">Gatos</button>
             </div>
             
-            <div id="listaAtendimentos" class="space-y-2 max-h-48 overflow-y-auto text-xs pr-1">
+            <div id="listaAtendimentos" class="space-y-2 max-h-56 overflow-y-auto text-xs pr-1">
                 <p class="text-slate-400 text-center py-2">Nenhum registo encontrado.</p>
             </div>
         </div>
@@ -222,7 +228,7 @@
         }
 
         function enviarSOSAnimal() {
-            const texto = `🚨 *SOS ANIMAL URGENTE - ANJO DA RUA* 🚨\nPreciso de apoio imediato de resgate para um animal em situação crítica!\nLocalização: ${gpsCoord || "GPS não obtido (Verificar de imediato)"}`;
+            const texto = `🚨 *SOS ANIMAL URGENTE - ANJO DA RUA* 🚨\nPreciso de apoio imediato de resgate para um animal em situação crítica!\nLocalização: ${gpsCoord || "GPS não obtido"}`;
             window.open(`https://wa.me/5583986603681?text=${encodeURIComponent(texto)}`, "_blank");
         }
 
@@ -241,6 +247,21 @@
             const desc = document.getElementById("ocorrenciaDesc").value || "Resgate animal registado em Patos-PB";
             const notas = document.getElementById("notasTratamento").value;
             const custo = document.getElementById("custoCaso").value || "0.00";
+            const fileInput = document.getElementById("fotoOcorrencia");
+            
+            let imagemUrl = "";
+            if (fileInput.files && fileInput.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    salvarNoStorage(especie, condicao, desc, notas, custo, e.target.result);
+                };
+                reader.readAsDataURL(fileInput.files[0]);
+            } else {
+                salvarNoStorage(especie, condicao, desc, notas, custo, "");
+            }
+        }
+
+        function salvarNoStorage(especie, condicao, desc, notas, custo, imagemUrl) {
             let hist = JSON.parse(localStorage.getItem("atendimentos") || "[]");
             
             hist.unshift({ 
@@ -249,6 +270,8 @@
                 desc, 
                 notas,
                 custo,
+                imagemUrl,
+                statusCaso: "Pendente",
                 data: new Date().toLocaleDateString() + ' ' + new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) 
             });
             
@@ -256,6 +279,18 @@
             document.getElementById("ocorrenciaDesc").value = "";
             document.getElementById("notasTratamento").value = "";
             document.getElementById("custoCaso").value = "";
+            document.getElementById("fotoOcorrencia").value = "";
+            carregarAtendimentos();
+            alert("Ocorrência guardada com sucesso no histórico!");
+        }
+
+        function alterarStatusCaso(index) {
+            let hist = JSON.parse(localStorage.getItem("atendimentos") || "[]");
+            const statusPossiveis = ["Pendente", "Em Tratamento", "Concluído"];
+            let atual = hist[index].statusCaso || "Pendente";
+            let proximoIdx = (statusPossiveis.indexOf(atual) + 1) % statusPossiveis.length;
+            hist[index].statusCaso = statusPossiveis[proximoIdx];
+            localStorage.setItem("atendimentos", JSON.stringify(hist));
             carregarAtendimentos();
         }
 
@@ -282,27 +317,37 @@
                 return;
             }
 
-            div.innerHTML = histFiltrado.map((item, index) => `
-                <div class="bg-slate-900 p-2.5 rounded border border-slate-700 space-y-1">
-                    <div class="flex justify-between items-center text-[10px]">
-                        <span class="font-bold text-teal-300">${item.titulo}</span>
-                        <span class="text-slate-400">${item.data}</span>
+            div.innerHTML = histFiltrado.map((item, index) => {
+                let corStatus = "bg-amber-900/80 text-amber-300 border-amber-500/50";
+                if (item.statusCaso === "Em Tratamento") corStatus = "bg-blue-900/80 text-blue-300 border-blue-500/50";
+                if (item.statusCaso === "Concluído") corStatus = "bg-teal-900/80 text-teal-300 border-teal-500/50";
+
+                return `
+                    <div class="bg-slate-900 p-2.5 rounded border border-slate-700 space-y-1.5">
+                        <div class="flex justify-between items-center text-[10px]">
+                            <span class="font-bold text-teal-300">${item.titulo}</span>
+                            <button onclick="alterarStatusCaso(${index})" class="px-2 py-0.5 rounded-full border text-[9px] font-semibold ${corStatus}">
+                                ${item.statusCaso || 'Pendente'} 🔄
+                            </button>
+                        </div>
+                        <div class="text-slate-200">${item.desc}</div>
+                        ${item.imagemUrl ? `<img src="${item.imagemUrl}" class="w-full h-24 object-cover rounded-lg border border-slate-700 mt-1">` : ''}
+                        ${item.notas ? `<div class="text-[10px] text-teal-400">Nota: ${item.notas}</div>` : ''}
+                        ${item.custo && item.custo !== "0.00" ? `<div class="text-[10px] text-amber-400 font-semibold">Custo: R$ ${item.custo}</div>` : ''}
+                        <div class="flex justify-between items-center pt-1 text-[10px]">
+                            <span class="text-slate-400">${item.data}</span>
+                            <button onclick="partilharCaso(${index})" class="text-teal-400 hover:text-teal-300 font-semibold"><i class="fa-solid fa-share-nodes"></i> Partilhar Caso</button>
+                        </div>
                     </div>
-                    <div class="text-slate-200">${item.desc}</div>
-                    ${item.notas ? `<div class="text-[10px] text-teal-400">Nota: ${item.notas}</div>` : ''}
-                    ${item.custo && item.custo !== "0.00" ? `<div class="text-[10px] text-amber-400 font-semibold">Custo: R$ ${item.custo}</div>` : ''}
-                    <div class="flex justify-end gap-2 pt-1">
-                        <button onclick="partilharCaso(${index})" class="text-[10px] text-teal-400 hover:text-teal-300 font-semibold"><i class="fa-solid fa-share-nodes"></i> Partilhar Caso</button>
-                    </div>
-                </div>
-            `).join("");
+                `;
+            }).join("");
         }
 
         function partilharCaso(index) {
             let hist = JSON.parse(localStorage.getItem("atendimentos") || "[]");
             let item = hist[index];
             if (!item) return;
-            let textoPost = `🚨 *APOIO À CAUSA ANIMAL - PATOS/PB* 🚨\n\nOcorrência: ${item.titulo}\nDetalhes: ${item.desc}\n${item.notas ? 'Cuidados: '+item.notas+'\n':''}${item.custo && item.custo !== "0.00" ? 'Custo: R$ '+item.custo+'\n':''}Data: ${item.data}\n\nJunte-se a esta causa e proteja os animais de rua! 🐾`;
+            let textoPost = `🚨 *APOIO À CAUSA ANIMAL - PATOS/PB* 🚨\n\nOcorrência: ${item.titulo}\nStatus: ${item.statusCaso || 'Pendente'}\nDetalhes: ${item.desc}\n${item.notas ? 'Cuidados: '+item.notas+'\n':''}${item.custo && item.custo !== "0.00" ? 'Custo: R$ '+item.custo+'\n':''}Data: ${item.data}\n\nJunte-se a esta causa e proteja os animais de rua! 🐾`;
             navigator.clipboard.writeText(textoPost).then(() => {
                 alert("Texto do caso copiado! Pronto para colar no Instagram ou WhatsApp.");
             });
@@ -314,7 +359,7 @@
                 alert("Sem registos para exportar.");
                 return;
             }
-            let textoRelatorio = "*Relatório de Resgates Animais - Anjo da Rua*\n\n" + hist.map(i => `• [${i.titulo}] ${i.data}: ${i.desc} ${i.notas ? '('+i.notas+')':''} ${i.custo && i.custo !== "0.00" ? '[R$ '+i.custo+']':''}`).join("\n");
+            let textoRelatorio = "*Relatório de Resgates Animais - Anjo da Rua*\n\n" + hist.map(i => `• [${i.titulo}] (${i.statusCaso || 'Pendente'}) ${i.data}: ${i.desc} ${i.notas ? '('+i.notas+')':''} ${i.custo && i.custo !== "0.00" ? '[R$ '+i.custo+']':''}`).join("\n");
             navigator.clipboard.writeText(textoRelatorio).then(() => {
                 alert("Relatório de resgates copiado!");
             });
