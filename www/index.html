@@ -11,8 +11,8 @@
     <header class="bg-teal-700 p-4 shadow-lg text-white">
         <div class="max-w-md mx-auto flex justify-between items-center">
             <div>
-                <h1 class="text-xl font-bold flex items-center gap-2"><i class="fa-solid fa-shield-dog"></i> Anjo da Rua</h1>
-                <p class="text-xs text-teal-200">Patos, PB • Secure Pro Edition</p>
+                <h1 class="text-xl font-bold flex items-center gap-2"><i class="fa-solid fa-paw"></i> Anjo da Rua</h1>
+                <p class="text-xs text-teal-200">Patos, PB • Proteção Animal</p>
             </div>
             <button onclick="alternarEstadoPlantao()" id="btnStatusOp" class="bg-teal-800 hover:bg-teal-900 text-teal-100 text-xs px-2.5 py-1.5 rounded-full font-semibold flex items-center gap-1 transition shadow">
                 <i id="iconeStatus" class="fa-solid fa-circle text-green-400 text-[8px]"></i> <span id="txtStatusOp">Operacional</span>
@@ -24,7 +24,7 @@
         <!-- Estatísticas & Modo Noturno -->
         <div class="grid grid-cols-2 gap-2">
             <div class="bg-slate-800 p-3 rounded-xl border border-slate-700 text-center">
-                <div class="text-[10px] text-slate-400 uppercase font-semibold">Total Registados</div>
+                <div class="text-[10px] text-slate-400 uppercase font-semibold">Resgates / Casos</div>
                 <div id="statTotal" class="text-lg font-bold text-teal-400">0</div>
             </div>
             <div class="bg-slate-800 p-3 rounded-xl border border-slate-700 text-center flex flex-col justify-center items-center">
@@ -34,22 +34,23 @@
             </div>
         </div>
 
-        <!-- Botão SOS Pânico Rápido -->
+        <!-- Botão SOS Resgate Animal -->
         <div class="bg-gradient-to-r from-red-900/80 to-rose-950 border border-red-500/50 p-3 rounded-xl flex items-center justify-between shadow-lg">
             <div class="flex items-center gap-3">
                 <div class="bg-red-600 text-white p-2.5 rounded-lg animate-pulse">
-                    <i class="fa-solid fa-triangle-exclamation text-lg"></i>
+                    <i class="fa-solid fa-dog text-lg"></i>
                 </div>
                 <div>
-                    <h2 class="text-xs font-bold text-red-200">Alerta de Pânico / SOS</h2>
-                    <p class="text-[10px] text-red-300">Envio imediato de socorro via WhatsApp.</p>
+                    <h2 class="text-xs font-bold text-red-200">SOS Animal URGENTE</h2>
+                    <p class="text-[10px] text-red-300">Acionar socorro imediato para animal em perigo.</p>
                 </div>
             </div>
-            <button onclick="enviarSOS()" class="bg-red-600 hover:bg-red-500 text-white text-xs font-bold px-3 py-2 rounded-lg shadow transition">
+            <button onclick="enviarSOSAnimal()" class="bg-red-600 hover:bg-red-500 text-white text-xs font-bold px-3 py-2 rounded-lg shadow transition">
                 SOS 🚨
             </button>
         </div>
 
+        <!-- Painel de Emergências Gerais -->
         <div class="grid grid-cols-3 gap-2">
             <a href="tel:193" class="bg-slate-800 p-3 rounded-xl text-center border border-slate-700 hover:border-red-500 transition">
                 <i class="fa-solid fa-fire-engine text-red-400 text-xl mb-1"></i>
@@ -68,23 +69,34 @@
             </a>
         </div>
 
-        <!-- Registo de Ocorrência -->
+        <!-- Registo de Ocorrência Animal & GPS -->
         <div class="bg-slate-800 p-4 rounded-xl border border-slate-700 shadow-lg space-y-3">
-            <h2 class="text-sm font-bold flex items-center gap-2"><i class="fa-solid fa-location-crosshairs text-teal-400"></i> Registar Ocorrência & GPS</h2>
+            <h2 class="text-sm font-bold flex items-center gap-2"><i class="fa-solid fa-shield-dog text-teal-400"></i> Registar Ocorrência Animal</h2>
             
-            <textarea id="ocorrenciaDesc" placeholder="Descreva a ocorrência ou animal/situação resgatada..." class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-xs text-white focus:outline-none focus:border-teal-500 h-20"></textarea>
-            
-            <div>
-                <label class="text-[10px] text-slate-400 block mb-1">Nível de Urgência:</label>
-                <select id="nivelUrgencia" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-xs text-white focus:outline-none focus:border-teal-500">
-                    <option value="🟢 Normal / Rotina">🟢 Normal / Rotina</option>
-                    <option value="🟡 Atenção / Moderado">🟡 Atenção / Moderado</option>
-                    <option value="🔴 URGENTE / Crítico">🔴 URGENTE / Crítico</option>
-                </select>
+            <div class="grid grid-cols-2 gap-2">
+                <div>
+                    <label class="text-[10px] text-slate-400 block mb-1">Espécie:</label>
+                    <select id="especieAnimal" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-xs text-white focus:outline-none focus:border-teal-500">
+                        <option value="🐕 Cão">🐕 Cão</option>
+                        <option value="🐈 Gato">🐈 Gato</option>
+                        <option value="🐎 Outro / Equídeo">🐎 Outro / Equídeo</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="text-[10px] text-slate-400 block mb-1">Condição:</label>
+                    <select id="condicaoAnimal" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-xs text-white focus:outline-none focus:border-teal-500">
+                        <option value="🔴 Atropelado / Ferido">🔴 Atropelado / Ferido</option>
+                        <option value="🟠 Maus-tratos / Agressão">🟠 Maus-tratos / Agressão</option>
+                        <option value="🟡 Doente / Desnutrido">🟡 Doente / Desnutrido</option>
+                        <option value="🟢 Abandonado / Perdido">🟢 Abandonado / Perdido</option>
+                    </select>
+                </div>
             </div>
 
+            <textarea id="ocorrenciaDesc" placeholder="Descreva os detalhes do animal, raça aparente, cor e ponto de referência exato..." class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-xs text-white focus:outline-none focus:border-teal-500 h-20"></textarea>
+            
             <div>
-                <label class="text-[10px] text-slate-400 block mb-1">Anexo Registo Fotográfico:</label>
+                <label class="text-[10px] text-slate-400 block mb-1">Foto do Animal:</label>
                 <input type="file" id="fotoOcorrencia" accept="image/*" class="w-full text-xs text-slate-400 file:mr-2 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-slate-700 file:text-teal-300 hover:file:bg-slate-600">
             </div>
 
@@ -99,10 +111,20 @@
             <p id="statusGPS" class="text-[10px] text-slate-400">GPS não capturado.</p>
         </div>
 
-        <!-- Histórico e Relatórios -->
+        <!-- Guia Rápido de Primeiros Socorros para Animais de Rua -->
+        <div class="bg-slate-800 p-4 rounded-xl border border-slate-700 shadow-lg space-y-2">
+            <h2 class="text-sm font-bold flex items-center gap-2"><i class="fa-solid fa-kit-medical text-teal-400"></i> Guia Rápido de Socorro Animal</h2>
+            <div class="text-[11px] text-slate-300 space-y-1.5 bg-slate-900 p-3 rounded-lg border border-slate-700">
+                <p>• <b>Atropelados:</b> Não puxe bruscamente. Use uma manta ou papelão firme como maca para evitar lesões na coluna.</p>
+                <p>• <b>Agressivos por dor:</b> Animais assustados podem morder. Cubra a cabeça com cuidado com um pano se precisar de os mover.</p>
+                <p>• <b>Hidratação:</b> Ofereça água limpa fresca num recipiente raso, mas nunca force líquidos se estiver inconsciente.</p>
+            </div>
+        </div>
+
+        <!-- Histórico de Resgates -->
         <div class="bg-slate-800 p-4 rounded-xl border border-slate-700 shadow-lg space-y-3">
             <div class="flex justify-between items-center">
-                <h2 class="text-sm font-bold flex items-center gap-2"><i class="fa-solid fa-list-check text-teal-400"></i> Histórico de Atendimentos</h2>
+                <h2 class="text-sm font-bold flex items-center gap-2"><i class="fa-solid fa-list-check text-teal-400"></i> Histórico de Resgates</h2>
                 <div class="flex gap-1">
                     <button onclick="copiarRelatorio()" title="Copiar Relatório" class="bg-slate-700 hover:bg-slate-600 text-teal-300 text-[10px] px-2 py-1 rounded font-semibold"><i class="fa-solid fa-copy"></i></button>
                     <button onclick="registarAtendimento()" class="bg-teal-600 hover:bg-teal-500 text-white text-[10px] px-2.5 py-1 rounded font-semibold">+ Guardar</button>
@@ -110,12 +132,13 @@
             </div>
             
             <div id="listaAtendimentos" class="space-y-2 max-h-40 overflow-y-auto text-xs">
-                <p class="text-slate-400 text-center py-2">Nenhum registo recente.</p>
+                <p class="text-slate-400 text-center py-2">Nenhum registo de resgate recente.</p>
             </div>
         </div>
 
+        <!-- Úteis Patos-PB -->
         <div class="bg-slate-800 p-4 rounded-xl border border-slate-700 shadow-lg">
-            <h2 class="text-sm font-bold mb-2 flex items-center gap-2"><i class="fa-solid fa-address-book text-teal-400"></i> Úteis Patos-PB</h2>
+            <h2 class="text-sm font-bold mb-2 flex items-center gap-2"><i class="fa-solid fa-address-book text-teal-400"></i> Órgãos & Apoio Patos-PB</h2>
             <div class="grid grid-cols-2 gap-2 text-xs">
                 <a href="tel:199" class="bg-slate-900 p-2 rounded border border-slate-700 flex justify-between items-center">
                     <span>Defesa Civil</span>
@@ -141,7 +164,7 @@
         let estadoIdx = 0;
         const estados = [
             { texto: "Operacional", cor: "bg-teal-800", icone: "text-green-400" },
-            { texto: "Em Ocorrência", cor: "bg-amber-800", icone: "text-amber-400" },
+            { texto: "Em Resgate", cor: "bg-amber-800", icone: "text-amber-400" },
             { texto: "Descanso", cor: "bg-slate-700", icone: "text-slate-400" }
         ];
 
@@ -161,14 +184,15 @@
         }
 
         function enviarOcorrenciaWhatsApp() {
+            const especie = document.getElementById("especieAnimal").value;
+            const condicao = document.getElementById("condicaoAnimal").value;
             const desc = document.getElementById("ocorrenciaDesc").value;
-            const urgencia = document.getElementById("nivelUrgencia").value;
-            const texto = `*Ocorrência Anjo da Rua*\nUrgência: ${urgencia}\nDescrição: ${desc}\nLocalização: ${gpsCoord || "Não informada"}`;
+            const texto = `🐾 *RESGATE ANIMAL - ANJO DA RUA* 🐾\nEspécie: ${especie}\nCondição: ${condicao}\nDetalhes: ${desc}\nLocalização: ${gpsCoord || "Não informada"}`;
             window.open(`https://wa.me/5583986603681?text=${encodeURIComponent(texto)}`, "_blank");
         }
 
-        function enviarSOS() {
-            const texto = `🚨 *ALERTA SOS - ANJO DA RUA* 🚨\nPreciso de apoio urgente na minha localização!\nLocalização: ${gpsCoord || "GPS não obtido (Verificar de imediato)"}`;
+        function enviarSOSAnimal() {
+            const texto = `🚨 *SOS ANIMAL URGENTE - ANJO DA RUA* 🚨\nPreciso de apoio imediato de resgate para um animal em situação crítica!\nLocalização: ${gpsCoord || "GPS não obtido (Verificar de imediato)"}`;
             window.open(`https://wa.me/5583986603681?text=${encodeURIComponent(texto)}`, "_blank");
         }
 
@@ -182,13 +206,14 @@
         }
 
         function registarAtendimento() {
-            const desc = document.getElementById("ocorrenciaDesc").value || "Atendimento operacional padrão";
-            const urgencia = document.getElementById("nivelUrgencia").value;
+            const especie = document.getElementById("especieAnimal").value;
+            const condicao = document.getElementById("condicaoAnimal").value;
+            const desc = document.getElementById("ocorrenciaDesc").value || "Resgate animal padrão";
             let hist = JSON.parse(localStorage.getItem("atendimentos") || "[]");
             
             hist.unshift({ 
+                titulo: `${especie} - ${condicao}`,
                 desc, 
-                urgencia, 
                 data: new Date().toLocaleDateString() + ' ' + new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) 
             });
             
@@ -203,13 +228,13 @@
             document.getElementById("statTotal").innerText = hist.length;
 
             if (hist.length === 0) {
-                div.innerHTML = '<p class="text-slate-400 text-center py-2">Nenhum registo recente.</p>';
+                div.innerHTML = '<p class="text-slate-400 text-center py-2">Nenhum registo de resgate recente.</p>';
                 return;
             }
             div.innerHTML = hist.map(item => `
                 <div class="bg-slate-900 p-2.5 rounded border border-slate-700 space-y-1">
                     <div class="flex justify-between items-center text-[10px]">
-                        <span class="font-bold text-teal-300">${item.urgencia}</span>
+                        <span class="font-bold text-teal-300">${item.titulo}</span>
                         <span class="text-slate-400">${item.data}</span>
                     </div>
                     <div class="text-slate-200">${item.desc}</div>
@@ -223,9 +248,9 @@
                 alert("Sem registos para exportar.");
                 return;
             }
-            let textoRelatorio = "*Relatório de Atendimentos - Anjo da Rua*\n\n" + hist.map(i => `• [${i.urgencia}] ${i.data}: ${i.desc}`).join("\n");
+            let textoRelatorio = "*Relatório de Resgates Animais - Anjo da Rua*\n\n" + hist.map(i => `• [${i.titulo}] ${i.data}: ${i.desc}`).join("\n");
             navigator.clipboard.writeText(textoRelatorio).then(() => {
-                alert("Relatório copiado para a área de transferência!");
+                alert("Relatório de resgates copiado!");
             });
         }
 
