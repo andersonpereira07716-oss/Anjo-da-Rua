@@ -7,7 +7,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
-<body class="bg-slate-900 text-slate-100 min-h-screen pb-12">
+<body class="bg-slate-900 text-slate-100 min-h-screen pb-12 transition-colors duration-300" id="corpoApp">
     <header class="bg-teal-700 p-4 shadow-lg text-white">
         <div class="max-w-md mx-auto flex justify-between items-center">
             <div>
@@ -23,13 +23,13 @@
     <main class="max-w-md mx-auto p-4 space-y-4">
         <!-- Estatísticas & Modo Noturno -->
         <div class="grid grid-cols-2 gap-2">
-            <div class="bg-slate-800 p-3 rounded-xl border border-slate-700 text-center">
+            <div class="bg-slate-800 p-3 rounded-xl border border-slate-700 text-center shadow">
                 <div class="text-[10px] text-slate-400 uppercase font-semibold">Resgates / Casos</div>
                 <div id="statTotal" class="text-lg font-bold text-teal-400">0</div>
             </div>
-            <div class="bg-slate-800 p-3 rounded-xl border border-slate-700 text-center flex flex-col justify-center items-center">
+            <div class="bg-slate-800 p-3 rounded-xl border border-slate-700 text-center flex flex-col justify-center items-center shadow">
                 <button onclick="alternarModoNoturno()" class="text-xs bg-slate-700 hover:bg-slate-600 text-teal-300 px-3 py-1.5 rounded-lg font-semibold transition flex items-center gap-1">
-                    <i class="fa-solid fa-moon text-teal-400"></i> <span id="txtModo">Modo Noturno</span>
+                    <i id="iconeModo" class="fa-solid fa-moon text-teal-400"></i> <span id="txtModo">Modo Noturno</span>
                 </button>
             </div>
         </div>
@@ -52,17 +52,17 @@
 
         <!-- Painel de Emergências Gerais -->
         <div class="grid grid-cols-3 gap-2">
-            <a href="tel:193" class="bg-slate-800 p-3 rounded-xl text-center border border-slate-700 hover:border-red-500 transition">
+            <a href="tel:193" class="bg-slate-800 p-3 rounded-xl text-center border border-slate-700 hover:border-red-500 transition shadow">
                 <i class="fa-solid fa-fire-engine text-red-400 text-xl mb-1"></i>
                 <div class="text-xs font-bold">Bombeiros</div>
                 <div class="text-[10px] text-slate-400">193</div>
             </a>
-            <a href="tel:190" class="bg-slate-800 p-3 rounded-xl text-center border border-slate-700 hover:border-blue-500 transition">
+            <a href="tel:190" class="bg-slate-800 p-3 rounded-xl text-center border border-slate-700 hover:border-blue-500 transition shadow">
                 <i class="fa-solid fa-car-rear text-blue-400 text-xl mb-1"></i>
                 <div class="text-xs font-bold">Polícia</div>
                 <div class="text-[10px] text-slate-400">190</div>
             </a>
-            <a href="https://wa.me/5583986603681" target="_blank" class="bg-slate-800 p-3 rounded-xl text-center border border-slate-700 hover:border-teal-500 transition">
+            <a href="https://wa.me/5583986603681" target="_blank" class="bg-slate-800 p-3 rounded-xl text-center border border-slate-700 hover:border-teal-500 transition shadow">
                 <i class="fa-solid fa-shield text-teal-400 text-xl mb-1"></i>
                 <div class="text-xs font-bold">SGT Patrian</div>
                 <div class="text-[10px] text-teal-300">WhatsApp</div>
@@ -101,17 +101,23 @@
             </div>
 
             <div class="flex gap-2 pt-1">
-                <button onclick="capturarGPS()" class="flex-1 bg-slate-700 hover:bg-slate-600 text-teal-300 text-xs py-2 rounded-lg font-semibold transition flex items-center justify-center gap-1">
+                <button onclick="capturarGPS()" class="flex-1 bg-slate-700 hover:bg-slate-600 text-teal-300 text-xs py-2 rounded-lg font-semibold transition flex items-center justify-center gap-1 shadow">
                     <i class="fa-solid fa-crosshairs"></i> Obter GPS
                 </button>
-                <button onclick="enviarOcorrenciaWhatsApp()" class="flex-1 bg-teal-600 hover:bg-teal-500 text-white text-xs py-2 rounded-lg font-semibold transition flex items-center justify-center gap-1">
+                <button onclick="enviarOcorrenciaWhatsApp()" class="flex-1 bg-teal-600 hover:bg-teal-500 text-white text-xs py-2 rounded-lg font-semibold transition flex items-center justify-center gap-1 shadow">
                     <i class="fa-brands fa-whatsapp"></i> Enviar SGT
                 </button>
             </div>
-            <p id="statusGPS" class="text-[10px] text-slate-400">GPS não capturado.</p>
+            
+            <div id="containerRota" class="hidden">
+                <a id="linkRotaGPS" href="#" target="_blank" class="w-full bg-blue-600 hover:bg-blue-500 text-white text-xs py-2 rounded-lg font-semibold transition flex items-center justify-center gap-1 shadow">
+                    <i class="fa-solid fa-map-location-dot"></i> Abrir Rota no Google Maps
+                </a>
+            </div>
+            <p id="statusGPS" class="text-[10px] text-slate-400 text-center">GPS não capturado.</p>
         </div>
 
-        <!-- Guia Rápido de Primeiros Socorros para Animais de Rua -->
+        <!-- Guia Rápido de Primeiros Socorros -->
         <div class="bg-slate-800 p-4 rounded-xl border border-slate-700 shadow-lg space-y-2">
             <h2 class="text-sm font-bold flex items-center gap-2"><i class="fa-solid fa-kit-medical text-teal-400"></i> Guia Rápido de Socorro Animal</h2>
             <div class="text-[11px] text-slate-300 space-y-1.5 bg-slate-900 p-3 rounded-lg border border-slate-700">
@@ -127,24 +133,31 @@
                 <h2 class="text-sm font-bold flex items-center gap-2"><i class="fa-solid fa-list-check text-teal-400"></i> Histórico de Resgates</h2>
                 <div class="flex gap-1">
                     <button onclick="copiarRelatorio()" title="Copiar Relatório" class="bg-slate-700 hover:bg-slate-600 text-teal-300 text-[10px] px-2 py-1 rounded font-semibold"><i class="fa-solid fa-copy"></i></button>
-                    <button onclick="registarAtendimento()" class="bg-teal-600 hover:bg-teal-500 text-white text-[10px] px-2.5 py-1 rounded font-semibold">+ Guardar</button>
+                    <button onclick="registarAtendimento()" class="bg-teal-600 hover:bg-teal-500 text-white text-[10px] px-2.5 py-1 rounded font-semibold shadow">+ Guardar</button>
                 </div>
             </div>
+
+            <!-- Filtros Rápidos -->
+            <div class="flex gap-1 text-[10px]">
+                <button onclick="filtrarHistorico('TODOS')" id="filtroTodos" class="bg-teal-600 text-white px-2.5 py-1 rounded font-semibold flex-1">Todos</button>
+                <button onclick="filtrarHistorico('Cão')" id="filtroCao" class="bg-slate-700 text-slate-300 px-2.5 py-1 rounded font-semibold flex-1">Cães</button>
+                <button onclick="filtrarHistorico('Gato')" id="filtroGato" class="bg-slate-700 text-slate-300 px-2.5 py-1 rounded font-semibold flex-1">Gatos</button>
+            </div>
             
-            <div id="listaAtendimentos" class="space-y-2 max-h-40 overflow-y-auto text-xs">
+            <div id="listaAtendimentos" class="space-y-2 max-h-44 overflow-y-auto text-xs pr-1">
                 <p class="text-slate-400 text-center py-2">Nenhum registo de resgate recente.</p>
             </div>
         </div>
 
-        <!-- Úteis Patos-PB -->
+        <!-- Órgãos & Apoio Patos-PB -->
         <div class="bg-slate-800 p-4 rounded-xl border border-slate-700 shadow-lg">
             <h2 class="text-sm font-bold mb-2 flex items-center gap-2"><i class="fa-solid fa-address-book text-teal-400"></i> Órgãos & Apoio Patos-PB</h2>
             <div class="grid grid-cols-2 gap-2 text-xs">
-                <a href="tel:199" class="bg-slate-900 p-2 rounded border border-slate-700 flex justify-between items-center">
+                <a href="tel:199" class="bg-slate-900 p-2 rounded border border-slate-700 flex justify-between items-center hover:border-teal-500 transition">
                     <span>Defesa Civil</span>
                     <span class="text-teal-400 font-bold">199</span>
                 </a>
-                <a href="tel:192" class="bg-slate-900 p-2 rounded border border-slate-700 flex justify-between items-center">
+                <a href="tel:192" class="bg-slate-900 p-2 rounded border border-slate-700 flex justify-between items-center hover:border-teal-500 transition">
                     <span>SAMU</span>
                     <span class="text-teal-400 font-bold">192</span>
                 </a>
@@ -162,6 +175,7 @@
         let gpsCoord = "";
         let modoEscuroAtivo = true;
         let estadoIdx = 0;
+        let filtroAtual = "TODOS";
         const estados = [
             { texto: "Operacional", cor: "bg-teal-800", icone: "text-green-400" },
             { texto: "Em Resgate", cor: "bg-amber-800", icone: "text-amber-400" },
@@ -170,16 +184,23 @@
 
         function capturarGPS() {
             const status = document.getElementById("statusGPS");
+            const containerRota = document.getElementById("containerRota");
+            const linkRota = document.getElementById("linkRotaGPS");
+
             if (!navigator.geolocation) {
                 status.innerText = "Geolocalização não suportada.";
                 return;
             }
-            status.innerText = "A obter localização...";
+            status.innerText = "A obter localização exata...";
             navigator.geolocation.getCurrentPosition((pos) => {
-                gpsCoord = `https://maps.google.com/?q=${pos.coords.latitude},${pos.coords.longitude}`;
+                const lat = pos.coords.latitude;
+                const lon = pos.coords.longitude;
+                gpsCoord = `https://maps.google.com/?q=${lat},${lon}`;
+                linkRota.href = gpsCoord;
+                containerRota.classList.remove("hidden");
                 status.innerText = "GPS obtido com sucesso!";
             }, () => {
-                status.innerText = "Erro ao obter GPS.";
+                status.innerText = "Erro ao obter GPS. Verifique as permissões.";
             });
         }
 
@@ -209,11 +230,12 @@
         function registarAtendimento() {
             const especie = document.getElementById("especieAnimal").value;
             const condicao = document.getElementById("condicaoAnimal").value;
-            const desc = document.getElementById("ocorrenciaDesc").value || "Resgate animal padrão";
+            const desc = document.getElementById("ocorrenciaDesc").value || "Resgate animal registado em Patos-PB";
             const notas = document.getElementById("notasTratamento").value;
             let hist = JSON.parse(localStorage.getItem("atendimentos") || "[]");
             
             hist.unshift({ 
+                especie,
                 titulo: `${especie} - ${condicao}`,
                 desc, 
                 notas,
@@ -226,16 +248,30 @@
             carregarAtendimentos();
         }
 
+        function filtrarHistorico(tipo) {
+            filtroAtual = tipo;
+            document.getElementById("filtroTodos").className = tipo === 'TODOS' ? "bg-teal-600 text-white px-2.5 py-1 rounded font-semibold flex-1" : "bg-slate-700 text-slate-300 px-2.5 py-1 rounded font-semibold flex-1";
+            document.getElementById("filtroCao" ).className = tipo === 'Cão' ? "bg-teal-600 text-white px-2.5 py-1 rounded font-semibold flex-1" : "bg-slate-700 text-slate-300 px-2.5 py-1 rounded font-semibold flex-1";
+            document.getElementById("filtroGato").className = tipo === 'Gato' ? "bg-teal-600 text-white px-2.5 py-1 rounded font-semibold flex-1" : "bg-slate-700 text-slate-300 px-2.5 py-1 rounded font-semibold flex-1";
+            carregarAtendimentos();
+        }
+
         function carregarAtendimentos() {
             let hist = JSON.parse(localStorage.getItem("atendimentos") || "[]");
             const div = document.getElementById("listaAtendimentos");
             document.getElementById("statTotal").innerText = hist.length;
 
-            if (hist.length === 0) {
-                div.innerHTML = '<p class="text-slate-400 text-center py-2">Nenhum registo de resgate recente.</p>';
+            let histFiltrado = hist.filter(item => {
+                if (filtroAtual === 'TODOS') return true;
+                return item.especie.includes(filtroAtual);
+            });
+
+            if (histFiltrado.length === 0) {
+                div.innerHTML = '<p class="text-slate-400 text-center py-2">Nenhum registo encontrado.</p>';
                 return;
             }
-            div.innerHTML = hist.map(item => `
+
+            div.innerHTML = histFiltrado.map((item, index) => `
                 <div class="bg-slate-900 p-2.5 rounded border border-slate-700 space-y-1">
                     <div class="flex justify-between items-center text-[10px]">
                         <span class="font-bold text-teal-300">${item.titulo}</span>
@@ -243,8 +279,21 @@
                     </div>
                     <div class="text-slate-200">${item.desc}</div>
                     ${item.notas ? `<div class="text-[10px] text-teal-400">Nota: ${item.notas}</div>` : ''}
+                    <div class="flex justify-end gap-2 pt-1">
+                        <button onclick="partilharCaso(${index})" class="text-[10px] text-teal-400 hover:text-teal-300 font-semibold"><i class="fa-solid fa-share-nodes"></i> Partilhar Caso</button>
+                    </div>
                 </div>
             `).join("");
+        }
+
+        function partilharCaso(index) {
+            let hist = JSON.parse(localStorage.getItem("atendimentos") || "[]");
+            let item = hist[index];
+            if (!item) return;
+            let textoPost = `🚨 *APOIO À CAUSA ANIMAL - PATOS/PB* 🚨\n\nOcorrência: ${item.titulo}\nDetalhes: ${item.desc}\n${item.notas ? 'Cuidados: '+item.notas+'\n':''}Data: ${item.data}\n\nJunte-se a esta causa e proteja os animais de rua! 🐾`;
+            navigator.clipboard.writeText(textoPost).then(() => {
+                alert("Texto do caso copiado! Pronto para colar no Instagram ou WhatsApp.");
+            });
         }
 
         function copiarRelatorio() {
@@ -261,14 +310,17 @@
 
         function alternarModoNoturno() {
             modoEscuroAtivo = !modoEscuroAtivo;
-            const body = document.body;
+            const corpo = document.getElementById("corpoApp");
             const txtModo = document.getElementById("txtModo");
+            const iconeModo = document.getElementById("iconeModo");
             if (modoEscuroAtivo) {
-                body.className = "bg-slate-900 text-slate-100 min-h-screen pb-12";
+                corpo.className = "bg-slate-900 text-slate-100 min-h-screen pb-12 transition-colors duration-300";
                 txtModo.innerText = "Modo Noturno";
+                iconeModo.className = "fa-solid fa-moon text-teal-400";
             } else {
-                body.className = "bg-slate-100 text-slate-900 min-h-screen pb-12";
+                corpo.className = "bg-slate-100 text-slate-900 min-h-screen pb-12 transition-colors duration-300";
                 txtModo.innerText = "Modo Claro";
+                iconeModo.className = "fa-solid fa-sun text-amber-500";
             }
         }
 
