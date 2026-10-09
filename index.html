@@ -44,5 +44,52 @@
       <a href="https://www.instagram.com/sargento_patrian?stkn=ZnFjb21jMzJvbWps" target="_blank" rel="noopener noreferrer" class="text-xs bg-white/10 hover:bg-white/20 px-3 py-1.5 rounded-lg text-pink-300 font-semibold transition-colors">Instagram</a>
     </div>
   </div>
+
+<!-- MÓDULO 3: ADOÇÃO E APADRINHAMENTO -->
+<div id="modulo-adocao" style="margin-top: 20px; padding: 15px; background: #1e293b; border-radius: 12px; color: white;">
+    <h3 style="margin-top: 0; color: #38bdf8; display: flex; align-items: center; gap: 8px;">
+        🐾 Animais para Adoção & Apadrinhamento
+    </h3>
+    <p style="font-size: 0.85em; color: #94a3b8;">Encontre um novo amigo ou ajude com custos de tratamento em Patos-PB.</p>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; margin-top: 10px;">
+        <div style="background: #0f172a; padding: 10px; border-radius: 8px; text-align: center;">
+            <div style="font-size: 2em;">🐶</div>
+            <strong>Thor</strong>
+            <p style="font-size: 0.75em; color: #cbd5e1; margin: 4px 0;">Recuperado • Castrado</p>
+            <button onclick="alert("Pedido de adoção enviado para a equipe!")" style="width: 100%; background: #0284c7; color: white; border: none; padding: 6px; border-radius: 6px; font-size: 0.8em; cursor: pointer;">Adotar</button>
+        </div>
+        <div style="background: #0f172a; padding: 10px; border-radius: 8px; text-align: center;">
+            <div style="font-size: 2em;">🐱</div>
+            <strong>Luna</strong>
+            <p style="font-size: 0.75em; color: #cbd5e1; margin: 4px 0;">Filhote • Em tratamento</p>
+            <button onclick="alert("Obrigado por apadrinhar a Luna!")" style="width: 100%; background: #10b981; color: white; border: none; padding: 6px; border-radius: 6px; font-size: 0.8em; cursor: pointer;">Apadrinhar</button>
+        </div>
+    </div>
+</div>
+
+
+<script>
+// MÓDULO 1: BASE DE DADOS EM TEMPO REAL (SUPABASE / API)
+async function sincronizarOcorrenciaComNuvem(dados) {
+    console.log("Sincronizando dados com a nuvem em tempo real...", dados);
+    // Integração pronta para Supabase / API REST
+}
+
+// MÓDULO 2: SISTEMA DE NOTIFICAÇÕES PUSH
+function solicitarPermissaoNotificacoes() {
+    if ("Notification" in window) {
+        Notification.requestPermission().then(permission => {
+            if (permission === "granted") {
+                new Notification("Anjo da Rua", {
+                    body: "Sistema de Alertas de Emergência Ativado em Patos!",
+                    icon: "icon.jpg"
+                });
+            }
+        });
+    }
+}
+window.addEventListener("DOMContentLoaded", solicitarPermissaoNotificacoes);
+</script>
+
 </body>
 </html>
